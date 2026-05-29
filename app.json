@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "ChatGPT Demo",
+    "slug": "chatgpt-demo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#ffffff",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {}
+  }
+}

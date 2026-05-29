@@ -1,0 +1,14 @@
+{"_e":"root:init","_t":1779948490648,"format":"v0-jsonl","version":"56.1.12"}
+{"_e":"env:mode","_t":1779948490649,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1779948490659,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1779948500965,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1779948523680,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"metro:instantiate","_t":1779948547923,"atlas":false,"workers":10,"host":"::","port":8081}
+{"_e":"metro:server_log","_t":1779951435367,"level":"error","data":["An unexpected error occurred while installing the latest version of React Native DevTools. Using a fallback version instead. Details:\n\ndotslash error: 'fetch' command failed\ncaused by: failed to unpack `\\\\?\\C:\\Users\\11528\\AppData\\Local\\dotslash\\1f\\.tmp7CiXf6\\React Native DevTools-win32-x64\\React Native DevTools.exe`\ncaused by: failed to unpack `React Native DevTools-win32-x64/React Native DevTools.exe` into `\\\\?\\C:\\Users\\11528\\AppData\\Local\\dotslash\\1f\\.tmp7CiXf6\\React Native DevTools-win32-x64\\React Native DevTools.exe`\ncaused by: 磁盘空间不足。 (os error 112)\n"]}
+{"_e":"root:init","_t":1779951618890,"format":"v0-jsonl","version":"56.1.12"}
+{"_e":"env:mode","_t":1779951618937,"nodeEnv":"development","babelEnv":"development","mode":"development"}
+{"_e":"env:load","_t":1779951619036,"mode":"development","files":[],"env":{}}
+{"_e":"devserver:start","_t":1779951630690,"mode":"development","web":true,"baseUrl":"","asyncRoutes":false,"routerRoot":"../..\\..\\app","serverComponents":false,"serverActions":false,"serverRendering":false,"apiRoutes":false,"exporting":false}
+{"_e":"metro:config","_t":1779951653340,"serverRoot":"../..\\..","projectRoot":"../..\\..","exporting":false,"flags":{"autolinkingModuleResolution":false,"serverActions":false,"serverComponents":false,"reactCompiler":false,"optimizeGraph":false,"treeshaking":false,"logbox":false}}
+{"_e":"metro:instantiate","_t":1779951678828,"atlas":false,"workers":10,"host":"::","port":8081}
+{"_e":"metro:server_log","_t":1779952113325,"level":"warn","data":["Failed to download the latest version of React Native DevTools. Using a fallback version instead. Connect to the internet or check your network settings."]}
