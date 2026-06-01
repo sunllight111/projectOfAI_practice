@@ -1,5 +1,8 @@
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppHeader } from "../components/AppHeader";
 import { AiScreen } from "../screens/AiScreen";
@@ -8,35 +11,55 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import type { RootTabParamList } from "./types";
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
+const TAB_BAR_CONTENT_HEIGHT = 60;
 
 export function RootNavigator() {
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, 8);
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         header: () => <AppHeader title="ChatGPT Demo" />,
-        tabBarActiveTintColor: "#111827",
+        headerShown: route.name !== "Home",
+        tabBarActiveTintColor: "#222222",
         tabBarInactiveTintColor: "#9CA3AF",
+        tabBarLabel: getTabLabel(route.name),
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 19,
           fontWeight: "600",
-          marginBottom: 4
+          lineHeight: 24,
+          marginBottom: 0
+        },
+        tabBarItemStyle: {
+          height: TAB_BAR_CONTENT_HEIGHT,
+          justifyContent: "center",
+          paddingBottom: 4,
+          paddingTop: 6
         },
         tabBarStyle: {
-          height: 64,
-          paddingTop: 6,
-          borderTopWidth: 1,
-          borderTopColor: "#F1F5F9",
           backgroundColor: "#FFFFFF",
+          borderTopColor: "#F1F5F9",
+          borderTopWidth: 1,
           elevation: 8,
+          height: TAB_BAR_CONTENT_HEIGHT + bottomInset,
+          paddingBottom: bottomInset,
+          paddingTop: 0,
           shadowColor: "#111827",
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.05,
           shadowRadius: 10
         },
-        tabBarIcon: ({ color, size, focused }) => {
-          const iconName = getTabIcon(route.name, focused);
+        tabBarIcon: () => {
+          if (route.name !== "AI") {
+            return null;
+          }
 
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return (
+            <View style={styles.createButton}>
+              <Ionicons name="add" size={36} color="#FFFFFF" />
+            </View>
+          );
         }
       })}
     >
@@ -47,17 +70,26 @@ export function RootNavigator() {
   );
 }
 
-function getTabIcon(
-  routeName: keyof RootTabParamList,
-  focused: boolean
-): keyof typeof Ionicons.glyphMap {
+function getTabLabel(routeName: keyof RootTabParamList) {
   if (routeName === "Home") {
-    return focused ? "home" : "home-outline";
+    return "首页";
   }
 
   if (routeName === "AI") {
-    return focused ? "sparkles" : "sparkles-outline";
+    return "";
   }
 
-  return focused ? "person" : "person-outline";
+  return "我";
 }
+
+const styles = StyleSheet.create({
+  createButton: {
+    alignItems: "center",
+    backgroundColor: "#F43F5E",
+    borderRadius: 13,
+    height: 48,
+    justifyContent: "center",
+    marginTop: 8,
+    width: 72
+  }
+});

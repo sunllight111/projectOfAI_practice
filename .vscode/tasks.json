@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Expo: start",
+      "type": "shell",
+      "command": "$env:USERPROFILE = '${workspaceFolder}\\.expo-home'; $env:HOME = '${workspaceFolder}\\.expo-home'; $env:EXPO_HOME = '${workspaceFolder}\\.expo-home'; & 'C:\\Users\\11528\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe' .\\node_modules\\expo\\bin\\cli start --localhost",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "isBackground": true
+    }
+  ]
+}
