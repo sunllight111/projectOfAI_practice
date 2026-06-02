@@ -53,7 +53,40 @@ export type TranslationKey =
   | "pet.stats.energy"
   | "pet.stats.hunger"
   | "tabs.home"
-  | "tabs.profile";
+  | "tabs.pet"
+  | "tabs.profile"
+  | "tabs.workbench"
+  | "tool.badges.hot"
+  | "tool.demo.subtitle"
+  | "tool.demo.title"
+  | "tool.items.conversion.description"
+  | "tool.items.conversion.title"
+  | "tool.items.kpi.description"
+  | "tool.items.kpi.title"
+  | "tool.items.material.description"
+  | "tool.items.material.title"
+  | "tool.items.monitor.description"
+  | "tool.items.monitor.title"
+  | "tool.items.parameter.description"
+  | "tool.items.parameter.title"
+  | "tool.items.quiz.description"
+  | "tool.items.quiz.title"
+  | "tool.items.simulation.description"
+  | "tool.items.simulation.title"
+  | "tool.items.startup.description"
+  | "tool.items.startup.title"
+  | "tool.search.placeholder"
+  | "tool.sections.process.subtitle"
+  | "tool.sections.process.title"
+  | "tool.sections.training.subtitle"
+  | "tool.sections.training.title"
+  | "tool.stats.pending"
+  | "tool.stats.todayQueries"
+  | "tool.stats.trainingProgress"
+  | "tool.summary.status"
+  | "tool.summary.text"
+  | "tool.summary.title"
+  | "tool.title";
 
 const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
   zh: {
@@ -100,7 +133,47 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "pet.stats.energy": "\u7cbe\u529b",
     "pet.stats.hunger": "\u9971\u8179",
     "tabs.home": "\u9996\u9875",
-    "tabs.profile": "\u6211"
+    "tabs.pet": "\u5ba0\u7269",
+    "tabs.profile": "\u6211",
+    "tabs.workbench": "\u5de5\u4f5c\u53f0",
+    "tool.badges.hot": "\u70ed",
+    "tool.demo.subtitle": "\u4fdd\u7559\u539f\u59cb\u4ea4\u4e92\u6309\u94ae",
+    "tool.demo.title": "\u6f14\u793a\u529f\u80fd",
+    "tool.items.conversion.description":
+      "\u8f6c\u5316\u7387\u3001\u80fd\u8017\u4e0e\u635f\u5931\u5206\u6790",
+    "tool.items.conversion.title": "\u8f6c\u5316\u5206\u6790",
+    "tool.items.kpi.description": "\u5173\u952e\u6307\u6807\u8d8b\u52bf\u4e0e\u8fbe\u6210\u7387",
+    "tool.items.kpi.title": "KPI \u6307\u6807",
+    "tool.items.material.description":
+      "\u539f\u6599\u914d\u6bd4\u4e0e\u5e93\u5b58\u504f\u5dee\u6821\u9a8c",
+    "tool.items.material.title": "\u7269\u6599\u5e73\u8861",
+    "tool.items.monitor.description":
+      "\u8bbe\u5907\u72b6\u6001\u3001\u62a5\u8b66\u4e0e\u70b9\u68c0",
+    "tool.items.monitor.title": "\u5b9e\u65f6\u76d1\u63a7",
+    "tool.items.parameter.description":
+      "\u914d\u65b9\u3001\u6e29\u5ea6\u3001\u538b\u529b\u53c2\u6570\u901f\u67e5",
+    "tool.items.parameter.title": "\u53c2\u6570\u67e5\u8be2",
+    "tool.items.quiz.description":
+      "\u6bcf\u65e5 10 \u9898\uff0c\u5de9\u56fa\u57fa\u7840\u77e5\u8bc6",
+    "tool.items.quiz.title": "\u5c0f\u793c\u5237\u9898",
+    "tool.items.simulation.description":
+      "\u4eff\u771f\u6f14\u7ec3\u4e0e\u5f02\u5e38\u5904\u7f6e",
+    "tool.items.simulation.title": "\u4eff\u771f\u7cfb\u7edf",
+    "tool.items.startup.description":
+      "\u5f00\u505c\u8f66\u6b65\u9aa4\u3001\u98ce\u9669\u70b9\u63d0\u9192",
+    "tool.items.startup.title": "\u5f00\u8f66\u5bfc\u822a",
+    "tool.search.placeholder": "\u641c\u7d22\u53c2\u6570\u3001\u6307\u6807\u3001\u57f9\u8bad\u5185\u5bb9",
+    "tool.sections.process.subtitle": "\u751f\u4ea7\u8fc7\u7a0b\u5e38\u7528\u5de5\u5177",
+    "tool.sections.process.title": "\u5de5\u827a\u529f\u80fd",
+    "tool.sections.training.subtitle": "\u65b0\u4eba\u7ec3\u4e60\u4e0e\u80fd\u529b\u63d0\u5347",
+    "tool.sections.training.title": "\u5de5\u827a\u57f9\u8bad",
+    "tool.stats.pending": "\u5f85\u5904\u7406",
+    "tool.stats.todayQueries": "\u4eca\u65e5\u67e5\u8be2",
+    "tool.stats.trainingProgress": "\u57f9\u8bad\u8fdb\u5ea6",
+    "tool.summary.status": "\u8fd0\u884c\u4e2d",
+    "tool.summary.text": "2 \u6761\u6307\u6807\u9884\u8b66\uff0c6 \u9879\u4efb\u52a1\u5f85\u786e\u8ba4",
+    "tool.summary.title": "\u4eca\u65e5\u5de5\u827a\u6982\u89c8",
+    "tool.title": "\u5de5\u827a\u5de5\u4f5c\u53f0"
   },
   en: {
     "ai.audio": "Audio",
@@ -140,7 +213,40 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "pet.stats.energy": "Energy",
     "pet.stats.hunger": "Full",
     "tabs.home": "Home",
-    "tabs.profile": "Me"
+    "tabs.pet": "Pet",
+    "tabs.profile": "Me",
+    "tabs.workbench": "Workbench",
+    "tool.badges.hot": "Hot",
+    "tool.demo.subtitle": "Original interaction buttons",
+    "tool.demo.title": "Demo tools",
+    "tool.items.conversion.description": "Conversion, energy use, and loss analysis",
+    "tool.items.conversion.title": "Conversion",
+    "tool.items.kpi.description": "Key trends and completion rate",
+    "tool.items.kpi.title": "KPI",
+    "tool.items.material.description": "Ratio checks and inventory variance",
+    "tool.items.material.title": "Material balance",
+    "tool.items.monitor.description": "Equipment state, alarms, and inspection",
+    "tool.items.monitor.title": "Live monitor",
+    "tool.items.parameter.description": "Recipe, temperature, and pressure lookup",
+    "tool.items.parameter.title": "Parameters",
+    "tool.items.quiz.description": "10 daily questions to build fundamentals",
+    "tool.items.quiz.title": "Daily quiz",
+    "tool.items.simulation.description": "Simulation drills and abnormal handling",
+    "tool.items.simulation.title": "Simulator",
+    "tool.items.startup.description": "Startup steps and risk reminders",
+    "tool.items.startup.title": "Startup guide",
+    "tool.search.placeholder": "Search parameters, metrics, training",
+    "tool.sections.process.subtitle": "Common tools for production workflow",
+    "tool.sections.process.title": "Process tools",
+    "tool.sections.training.subtitle": "Practice and skill development",
+    "tool.sections.training.title": "Training",
+    "tool.stats.pending": "Pending",
+    "tool.stats.todayQueries": "Queries today",
+    "tool.stats.trainingProgress": "Training",
+    "tool.summary.status": "Running",
+    "tool.summary.text": "2 metric alerts, 6 tasks pending confirmation",
+    "tool.summary.title": "Today's process overview",
+    "tool.title": "Process workbench"
   }
 };
 

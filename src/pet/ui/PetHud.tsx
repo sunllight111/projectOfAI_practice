@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -14,14 +15,11 @@ type PetHudProps = {
 export const PetHud = memo(function PetHud({ dispatch, snapshot }: PetHudProps) {
   const { t } = useLanguage();
   const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+  const bottomClearance = Math.max(tabBarHeight + insets.bottom + 22, 106);
 
   return (
-    <View
-      style={[
-        styles.panel,
-        { paddingBottom: Math.max(insets.bottom + 18, 30) }
-      ]}
-    >
+    <View style={[styles.panel, { paddingBottom: bottomClearance }]}>
       <View style={styles.statsPanel}>
         <StatBar
           color="#F97316"
@@ -118,7 +116,14 @@ function StatBar({
           ]}
         />
       </View>
-      <Text style={styles.statValue}>{value}</Text>
+      <Text
+        adjustsFontSizeToFit
+        minimumFontScale={0.72}
+        numberOfLines={1}
+        style={styles.statValue}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
@@ -206,6 +211,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "800",
     letterSpacing: 0,
+    maxWidth: 30,
     textAlign: "right",
     width: 30
   },

@@ -1,39 +1,42 @@
-# ChatGPT Demo 项目说明文档
+# ChatGPT Demo 项目说明
 
-更新时间：2026-05-29
+更新时间：2026-06-02
 
-本文档用于帮助后续维护者或 AI 助手快速理解本项目。它基于当前代码实际内容编写，不包含尚未实现的功能假设。
+本文档用于帮助维护者或 AI 助手快速理解当前项目。内容以现有代码为准，不描述尚未落地的功能假设。
 
 ## 1. 项目概览
 
-`chatgpt-demo` 是一个使用 Expo 搭建的 React Native 应用，当前实现了一个最小可运行的三 Tab 移动端界面：
+`chatgpt-demo` 是一个基于 Expo 的 React Native 应用，目前已经从最初的占位 Demo 演进为一个包含内容流、搜索、工作台能力演示和虚拟宠物页的移动端原型。
 
-- `Home`：首页，占位显示 `ChatGPT`
-- `AI`：AI 页面，占位显示 `AI`
-- `Profile`：个人页，占位显示 `Profile`
+当前主要功能：
 
-项目目前没有后端接口、没有本地持久化、没有全局状态管理，也没有真正的 ChatGPT / AI 调用逻辑。当前代码主要完成了应用壳、底部 Tab 导航、安全区域适配和基础页面占位。
+- `Home`：类小红书首页，包含 `关注 / 发现 / 重庆` 三个频道，支持横向频道切换和纵向瀑布流浏览。
+- `Search`：从 Home 搜索按钮进入的搜索页，包含搜索输入框、热门搜索、搜索发现和空状态提示。
+- `AI`：工作台页，当前演示音频播放、手机震动和中英文切换。
+- `Profile`：虚拟宠物页，包含 3D 宠物渲染、触摸/拖拽互动、喂食/逗玩/休息按钮和宠物状态 HUD。
+- 全局：支持中英文文案切换，底部 tabbar 使用悬浮半透明胶囊样式。
+
+项目目前没有后端接口、登录体系、真实 ChatGPT API 调用、持久化存储或测试框架。
 
 ## 2. 技术栈
 
-核心技术：
+核心依赖以 `package.json` 和 `package-lock.json` 为准：
 
-- Expo：应用运行、打包和开发服务入口
-- React 19
-- React Native 0.85
-- TypeScript，开启 `strict`
+- Expo `~54.0.35`
+- React `19.1.0`
+- React Native `0.81.5`
+- TypeScript `~5.9.2`，启用 `strict`
 - React Navigation 6，使用 Bottom Tabs
-- `react-native-safe-area-context`：处理刘海屏、状态栏等安全区域
-- `expo-status-bar`：控制状态栏样式
-- `@expo/vector-icons`：底部 Tab 图标使用 Ionicons
-- `react-native-reanimated`：已配置 Babel 插件，但当前业务代码尚未使用动画
-- `react-native-web` 与 `@expo/metro-runtime`：支持 Expo Web
-
-重要依赖版本以 `package.json` 和 `package-lock.json` 为准。当前 `package-lock.json` 使用 lockfileVersion 3。
+- `react-native-safe-area-context`：安全区适配
+- `@expo/vector-icons`：Ionicons 图标
+- `expo-audio`：AI 页音频播放演示
+- `expo-gl`、`expo-three`、`three`、`@react-three/fiber`：虚拟宠物 3D 渲染
+- `react-native-gesture-handler`、`react-native-reanimated`：手势和动画基础依赖
+- `react-native-web`、`@expo/metro-runtime`：Expo Web 支持
 
 ## 3. 运行方式
 
-常用 npm scripts 定义在 `package.json`：
+`package.json` 中保留了常规 Expo scripts：
 
 ```bash
 npm start
@@ -42,28 +45,32 @@ npm run ios
 npm run web
 ```
 
-脚本含义：
+但当前机器环境里曾出现 `npm` 不在 PATH、用户目录 `.expo` 无写权限的问题。因此项目额外提供了 VS Code/Codex 任务：
 
-- `npm start`：执行 `expo start`
-- `npm run android`：执行 `expo start --android`
-- `npm run ios`：执行 `expo start --ios`
-- `npm run web`：执行 `expo start --web`
-
-当前项目目录中已经存在 `node_modules`，也有 `package-lock.json`。如果在新环境中恢复依赖，应优先使用：
-
-```bash
-npm install
+```text
+Expo: start
 ```
 
-或在需要严格复现锁文件时使用：
+该任务定义在 `.vscode/tasks.json`，会使用 Codex bundled Node，并把 `USERPROFILE`、`HOME`、`EXPO_HOME` 指向项目内 `.expo-home`，避免 Expo 写入受限的用户目录。
 
-```bash
-npm ci
+手动等价命令：
+
+```powershell
+$env:USERPROFILE = "${PWD}\.expo-home"
+$env:HOME = "${PWD}\.expo-home"
+$env:EXPO_HOME = "${PWD}\.expo-home"
+& 'C:\Users\11528\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' .\node_modules\expo\bin\cli start --localhost
+```
+
+类型检查可使用：
+
+```powershell
+& 'C:\Users\11528\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\bin\node.exe' .\node_modules\typescript\bin\tsc --noEmit
 ```
 
 ## 4. 目录结构
 
-当前有效源码结构如下，`node_modules` 和 `.expo` 是生成/依赖目录，不应作为业务代码阅读重点。
+关键业务目录如下：
 
 ```text
 .
@@ -72,516 +79,394 @@ npm ci
 ├── app.json
 ├── babel.config.js
 ├── package.json
-├── package-lock.json
 ├── tsconfig.json
+├── .vscode/
+│   └── tasks.json
 ├── assets/
-│   └── .gitkeep
+│   └── audio/
+│       └── rain-3s.wav
 └── src/
     ├── components/
     │   └── AppHeader.tsx
+    ├── i18n/
+    │   └── language.tsx
     ├── navigation/
     │   ├── RootNavigator.tsx
     │   └── types.ts
-    └── screens/
-        ├── AiScreen.tsx
-        ├── HomeScreen.tsx
-        └── ProfileScreen.tsx
+    ├── screens/
+    │   ├── AiScreen.tsx
+    │   ├── HomeScreen.tsx
+    │   ├── ProfileScreen.tsx
+    │   └── SearchScreen.tsx
+    └── pet/
+        ├── VirtualPetModule.tsx
+        ├── engine/
+        ├── interaction/
+        ├── renderer/
+        └── ui/
 ```
 
-## 5. 启动链路
+## 5. 应用启动链路
 
-应用启动链路非常短：
+启动链路：
 
 1. `index.js`
 2. `App.tsx`
 3. `src/navigation/RootNavigator.tsx`
-4. 当前选中的 screen，例如 `HomeScreen`
+4. 当前选中的 screen
 
-### `index.js`
-
-职责：
-
-- 首先导入 `react-native-gesture-handler`
-- 从 `expo` 导入 `registerRootComponent`
-- 导入根组件 `App`
-- 调用 `registerRootComponent(App)` 注册应用入口
-
-注意点：
-
-- `react-native-gesture-handler` 的导入放在最顶部，这是 React Navigation / 手势相关依赖的常见要求，不建议随意移动到其他导入之后。
-
-### `App.tsx`
-
-职责：
-
-- 包裹 `SafeAreaProvider`
-- 包裹 `NavigationContainer`
-- 设置 Expo 状态栏为 `dark`
-- 渲染 `RootNavigator`
-
-当前组件结构：
+`App.tsx` 当前包裹顺序：
 
 ```tsx
 <SafeAreaProvider>
-  <NavigationContainer>
-    <StatusBar style="dark" />
-    <RootNavigator />
-  </NavigationContainer>
+  <LanguageProvider>
+    <NavigationContainer>
+      <StatusBar style="dark" />
+      <RootNavigator />
+    </NavigationContainer>
+  </LanguageProvider>
 </SafeAreaProvider>
 ```
 
 含义：
 
-- `SafeAreaProvider` 为后代组件提供安全区域数据，`AppHeader` 会读取这里的数据。
-- `NavigationContainer` 是 React Navigation 的根容器，所有 navigator 必须处于其内部。
-- `StatusBar style="dark"` 表示状态栏图标/文字使用深色，适合当前白色背景。
+- `SafeAreaProvider` 提供刘海屏、状态栏、底部安全区数据。
+- `LanguageProvider` 提供当前语言、切换语言和 `t(key)` 翻译函数。
+- `NavigationContainer` 是 React Navigation 根容器。
+- `RootNavigator` 注册底部 tab 和隐藏搜索页。
 
 ## 6. 导航结构
 
-导航代码集中在 `src/navigation`。
+导航集中在 `src/navigation`。
 
-### `src/navigation/types.ts`
+### `types.ts`
 
-定义根 Tab 的参数类型：
+当前路由类型：
 
 ```ts
 export type RootTabParamList = {
   Home: undefined;
   AI: undefined;
   Profile: undefined;
+  Search: undefined;
 };
 ```
 
-当前三个 Tab 都不接收 route params，所以值都是 `undefined`。
+`Search` 是挂在 Bottom Tab Navigator 中的隐藏路由，用于从首页搜索按钮跳转；它不显示底部 tab 按钮。
 
-如果以后某个 Tab 需要参数，例如 Profile 需要 `userId`，应修改为类似：
+### `RootNavigator.tsx`
 
-```ts
-Profile: { userId: string };
-```
+主要职责：
 
-然后同步更新跳转调用处和 screen props 类型。
+- 注册 `Home`、`AI`、`Profile`、`Search`
+- 首页、个人页、搜索页隐藏默认 header
+- `Search` 隐藏底部 tabbar
+- 底部 tabbar 使用悬浮半透明胶囊样式
+- tab 文案走 i18n：`首页 / 工作台 / 我`
 
-### `src/navigation/RootNavigator.tsx`
+tab 图标映射：
 
-职责：
-
-- 创建底部 Tab Navigator
-- 注册三个 Tab 页面
-- 统一设置顶部 header、底部 Tab 样式和 Tab 图标
-
-核心实现：
-
-```tsx
-const Tab = createBottomTabNavigator<RootTabParamList>();
-```
-
-注册的页面：
-
-```tsx
-<Tab.Screen name="Home" component={HomeScreen} />
-<Tab.Screen name="AI" component={AiScreen} />
-<Tab.Screen name="Profile" component={ProfileScreen} />
-```
-
-统一 screen options：
-
-- `header`：所有页面都使用 `AppHeader`，标题固定为 `ChatGPT Demo`
-- `tabBarActiveTintColor`：选中颜色 `#111827`
-- `tabBarInactiveTintColor`：未选中颜色 `#9CA3AF`
-- `tabBarLabelStyle`：字体 12、字重 600、底部间距 4
-- `tabBarStyle`：高度 64，白底，顶部边线，带轻微阴影
-- `tabBarIcon`：根据 route name 和 focused 状态返回 Ionicons 图标
-
-Tab 图标映射由 `getTabIcon` 负责：
-
-| 路由名 | 选中图标 | 未选中图标 |
+| Route | 选中 | 未选中 |
 | --- | --- | --- |
 | `Home` | `home` | `home-outline` |
-| `AI` | `sparkles` | `sparkles-outline` |
+| `AI` | `briefcase` | `briefcase-outline` |
 | `Profile` | `person` | `person-outline` |
 
-`getTabIcon` 返回类型是 `keyof typeof Ionicons.glyphMap`，这样 TypeScript 可以约束图标名称必须存在于 Ionicons 图标集中。
+底部 tabbar 注意点：
 
-## 7. 公共组件
+- 使用 `position: "absolute"` 悬浮在内容上。
+- 页面底部内容需要自行预留空间，Home 和 Pet HUD 已分别通过 `useBottomTabBarHeight()` 做了底部安全留白。
+- `Search` 页面通过 `tabBarButton: () => null` 隐藏 tab 按钮。
 
-### `src/components/AppHeader.tsx`
+## 7. 国际化
 
-`AppHeader` 是当前唯一公共组件。
+国际化逻辑在 `src/i18n/language.tsx`。
 
-Props：
+能力：
 
-```ts
-type AppHeaderProps = {
-  title: string;
-};
-```
+- 语言类型：`zh | en`
+- 默认语言：`zh`
+- `LanguageProvider` 保存语言状态
+- `useLanguage()` 返回：
+  - `language`
+  - `setLanguage`
+  - `toggleLanguage`
+  - `t(key)`
 
-职责：
+当前覆盖范围：
 
-- 读取设备安全区域顶部 inset
-- 用 `paddingTop: insets.top` 避免内容被状态栏或刘海区域遮挡
-- 渲染一个固定高度 56 的居中标题栏
-- 提供白色背景、底部分割线和轻微阴影
+- Home 顶部 tab、频道、按钮 accessibility label
+- AI 页按钮和语言切换文案
+- Pet 页动作、状态、消息和数值标签
+- 底部 tab 文案
 
-结构：
-
-```tsx
-<View style={[styles.safeArea, { paddingTop: insets.top }]}>
-  <View style={styles.header}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-</View>
-```
-
-样式要点：
-
-- `safeArea.backgroundColor` 是 `#FFFFFF`
-- `safeArea.borderBottomWidth` 使用 `StyleSheet.hairlineWidth`
-- `safeArea.elevation` 支持 Android 阴影
-- `safeArea.shadow*` 支持 iOS 阴影
-- `header.height` 固定为 56
-- 标题颜色为 `#111827`，字号 18，字重 700
-
-当前所有 Tab 的 header title 都由 `RootNavigator` 固定传入 `ChatGPT Demo`。如果未来希望不同页面显示不同标题，可以在 `screenOptions` 中根据 `route.name` 生成标题，或在每个 `Tab.Screen` 的 `options` 里单独配置。
+新增文案时需要先扩展 `TranslationKey` 联合类型，再同步补齐 `TRANSLATIONS.zh` 和 `TRANSLATIONS.en`。
 
 ## 8. 页面说明
 
-当前三个页面都在 `src/screens` 下，结构高度一致：白色背景、flex 居中、水平 padding 24、一个标题文本。
+### `HomeScreen.tsx`
 
-### `src/screens/HomeScreen.tsx`
+Home 是当前最复杂的页面，模拟小红书风格信息流。
 
-显示内容：
+主要能力：
+
+- 顶部主频道：`关注 / 发现 / 重庆`
+- 顶部二级频道：`推荐 / RED / 直播 / 短剧 / 美食 / 旅行 / 穿搭`
+- 右上角搜索按钮跳转到 `Search`
+- 三个主频道均有自定义内容数据
+- 每个频道内部是两列 masonry 瀑布流
+- 支持横向频道切换和纵向内容滚动
+- 底部预留悬浮 tabbar 空间
+
+当前实现要点：
+
+- 三个频道页面并排渲染在 `Animated.View` track 中。
+- `PanResponder` 只在横向移动明显大于纵向移动时接管手势，避免影响瀑布流上下滚动。
+- `pageTranslateX` 控制页面横向跟手移动。
+- `activeProgress` 控制顶部 tab 的字体大小、颜色和下划线动画。
+- `switchSection()` 负责频道吸附和状态同步。
+- 吸附动画使用 `Animated.timing + Easing.out(Easing.cubic)`，避免 spring 越界导致非目标 tab 抖动。
+- 瀑布流不用 `FlatList numColumns`，而是手动把数据按估算高度拆成左右两列，避免行高对齐造成大空白。
+
+瀑布流相关函数：
+
+- `splitMasonryColumns(items)`
+- `getEstimatedCardHeight(item)`
+- `renderFeedCard(item, language)`
+
+当前卡片特征：
+
+- 网络图片来自 Unsplash
+- 支持普通图、长图、视频播放角标、点赞态
+- 标题不再固定最小高度，短标题会让作者栏自然上移
+- 作者头像、昵称、点赞信息按小红书信息流比例压缩
+
+### `SearchScreen.tsx`
+
+搜索页从首页右上角搜索按钮进入。
+
+当前 UI：
+
+- 顶部返回按钮
+- 搜索输入框，`autoFocus`
+- 取消按钮
+- 热门搜索标签
+- 搜索发现卡片
+- 输入提示空状态
+
+当前没有真实搜索逻辑、网络请求或结果过滤，点击热门词只会填充输入框。
+
+### `AiScreen.tsx`
+
+底部 tab 显示为“工作台”，对应代码路由仍是 `AI`。
+
+当前能力：
+
+- 页面标题显示 `AI 2112133`
+- 播放 `assets/audio/rain-3s.wav`
+- 调用 `Vibration.vibrate(500)`
+- 切换中英文语言
+
+注意：当前没有 ChatGPT 对话 UI、模型调用、API client 或消息状态管理。
+
+### `ProfileScreen.tsx`
+
+`ProfileScreen` 只渲染：
 
 ```tsx
-<Text style={styles.title}>ChatGPT</Text>
+<VirtualPetModule />
 ```
 
-样式：
+主要逻辑在 `src/pet`。
 
-- 背景白色
-- 内容水平和垂直居中
-- 标题颜色 `#111827`
-- 字号 32
-- 字重 700
+## 9. 虚拟宠物模块
 
-这是当前默认首个 Tab，应用打开后通常先看到该页面。
+入口：`src/pet/VirtualPetModule.tsx`
 
-### `src/screens/AiScreen.tsx`
+模块组成：
 
-显示内容：
-
-```tsx
-<Text style={styles.title}>AI</Text>
+```text
+src/pet/
+├── VirtualPetModule.tsx
+├── engine/
+│   ├── petTypes.ts
+│   └── usePetStateMachine.ts
+├── interaction/
+│   ├── petHitTest.ts
+│   └── usePetGestures.ts
+├── renderer/
+│   ├── PetCanvas.tsx
+│   ├── PetLighting.tsx
+│   ├── PetModel.tsx
+│   └── PetScene.tsx
+└── ui/
+    └── PetHud.tsx
 ```
 
-样式：
+能力：
 
-- 背景白色
-- 内容居中
-- 标题字号 28
-- 字重 700
+- 3D 宠物场景渲染
+- 宠物头部、身体、尾巴和空白区域命中测试
+- tap、dragStart、dragMove、dragEnd 事件
+- 喂食、逗玩、休息按钮
+- 饥饿、精力、亲密度三项数值
+- 心情和消息文案走 i18n
 
-虽然页面名是 AI，但当前没有聊天输入、消息列表、模型调用、API key、网络请求或状态管理逻辑。
+`PetHud` 底部按钮曾与悬浮 tabbar 重合，目前通过 `useBottomTabBarHeight()` 动态计算底部留白。
 
-### `src/screens/ProfileScreen.tsx`
+关键类型见 `petTypes.ts`：
 
-显示内容：
+- `PetState`
+- `PetEvent`
+- `PetHitRegion`
+- `PetStats`
+- `PetSnapshot`
 
-```tsx
-<Text style={styles.title}>Profile</Text>
-```
+## 10. 公共组件
 
-样式：
+### `AppHeader.tsx`
 
-- 背景白色
-- 内容居中
-- 标题字号 28
-- 字重 700
+公共顶部 header，用于需要默认导航标题的页面。
 
-当前没有用户资料、登录态、设置项或账户相关逻辑。
+职责：
 
-## 9. 配置文件说明
+- 读取顶部安全区 `insets.top`
+- 渲染固定高度 56 的标题栏
+- 提供白色背景、底部分割线和轻微阴影
+
+Home、Profile、Search 当前隐藏默认 header；AI/工作台仍使用 `AppHeader title="ChatGPT Demo"`。
+
+## 11. 配置文件
 
 ### `package.json`
 
-说明：
-
-- 项目名：`chatgpt-demo`
-- 版本：`1.0.0`
-- 私有包：`private: true`
-- 主入口：`index.js`
-- 包含 Expo 常用启动脚本
-
-主要运行依赖：
-
-- Expo / React / React Native
-- React Navigation bottom tabs
-- React Native Gesture Handler
-- React Native Reanimated
-- React Native Safe Area Context
-- React Native Screens
-- Expo Vector Icons
-- Expo Font / Status Bar
-- React Native Web
-
-开发依赖：
-
-- `@babel/core`
-- `@types/react`
-- `typescript`
+保留 Expo 常规 scripts 和当前依赖声明。
 
 ### `app.json`
 
 Expo 应用配置：
 
-- 应用名：`ChatGPT Demo`
+- name：`ChatGPT Demo`
 - slug：`chatgpt-demo`
-- 版本：`1.0.0`
-- 方向：竖屏 `portrait`
-- 用户界面风格：浅色 `light`
-- 背景色：白色
-- `assetBundlePatterns`：打包所有 assets
-- iOS 支持 iPad：`supportsTablet: true`
-- Android 当前没有额外配置
+- version：`1.0.0`
+- orientation：`portrait`
+- userInterfaceStyle：`light`
+- iOS supportsTablet：`true`
 
-当前没有配置：
-
-- icon
-- splash
-- bundle identifier / package name
-- permissions
-- scheme
-- OTA updates
-- EAS build 相关字段
+当前尚未配置生产级 icon、splash、bundle id/package name、权限、scheme、EAS build 字段等。
 
 ### `babel.config.js`
 
-使用 Expo Babel preset：
-
-```js
-presets: ["babel-preset-expo"]
-```
-
-并配置：
+使用 `babel-preset-expo`，并启用：
 
 ```js
 plugins: ["react-native-reanimated/plugin"]
 ```
 
-注意点：
-
-- `react-native-reanimated/plugin` 通常要求放在 Babel plugins 最后。当前 plugins 数组只有它一个，所以满足该要求。
+Reanimated 插件通常需要放在 plugins 最后；当前只有这一个插件。
 
 ### `tsconfig.json`
 
-配置说明：
+当前配置：
 
-- 继承 `expo/tsconfig.base`
-- 开启 `strict: true`
-- 设置 `baseUrl: "."`
-- 配置路径别名：
+- extends：`expo/tsconfig.base`
+- `jsx: "react"`
+- `strict: true`
 
-```json
-"@/*": ["src/*"]
-```
+## 12. 样式和交互约定
 
-当前源码里还没有使用 `@/` 别名，全部使用相对路径导入。后续可以选择继续相对导入，也可以统一迁移到别名导入。
+当前 UI 约定：
 
-当前验证到的注意点：
+- 主要背景：白色或浅色
+- 卡片圆角多为 8
+- 字体统一 `letterSpacing: 0`
+- 底部 tabbar 是悬浮胶囊，不占布局流空间
+- 内容页需要主动为底部 tabbar 预留空间
+- 首页信息流尽量贴近小红书式紧凑卡片
+- 复杂交互优先保持移动端手势自然性：横向频道切换不能破坏纵向滚动
 
-- 直接运行 `.\node_modules\.bin\tsc.cmd --noEmit` 会因为 TypeScript 6 的 `baseUrl` 弃用提示失败：
+## 13. 当前未实现能力
 
-```text
-Option 'baseUrl' is deprecated and will stop functioning in TypeScript 7.0.
-Specify compilerOption '"ignoreDeprecations": "6.0"' to silence this error.
-```
+以下功能尚未实现：
 
-- 这不是业务代码类型错误，而是 TypeScript 6 对配置项的迁移提示。如果希望当前 `tsc --noEmit` 通过，可以在 `compilerOptions` 中补充 `"ignoreDeprecations": "6.0"`，或后续按 TypeScript 7 迁移建议调整路径别名配置。
-
-### `package-lock.json`
-
-锁定依赖版本。当前 lockfileVersion 是 3。维护依赖时应避免手动编辑该文件，使用 `npm install`、`npm uninstall` 或 `npm update` 让 npm 自动维护。
-
-## 10. 样式约定
-
-当前 UI 风格非常克制：
-
-- 主背景：白色 `#FFFFFF`
-- 主文字：深灰黑 `#111827`
-- 次级/未选中：灰色 `#9CA3AF`
-- 分割线：`#F1F5F9` 或 `#EEF2F7`
-- 字体通过系统默认字体渲染，没有自定义字体加载逻辑
-- 组件样式都用 React Native 的 `StyleSheet.create`
-- 所有页面都使用 `letterSpacing: 0`
-
-重复出现的页面布局模式：
-
-```ts
-container: {
-  alignItems: "center",
-  backgroundColor: "#FFFFFF",
-  flex: 1,
-  justifyContent: "center",
-  paddingHorizontal: 24
-}
-```
-
-如果新增页面并希望保持现有视觉一致，可以先复用这个布局模式。
-
-## 11. 当前数据流和状态
-
-当前项目没有复杂数据流：
-
-- 没有 React Context 业务状态
-- 没有 Redux、Zustand、MobX 等状态库
-- 没有 React Query / SWR
-- 没有 AsyncStorage
-- 没有网络请求
-- 没有表单状态
-- 没有环境变量
-- 没有 API client 层
-
-唯一动态数据来自：
-
-- React Navigation 的当前 route
-- `tabBarIcon` 的 focused 状态
-- `useSafeAreaInsets()` 返回的安全区域 top inset
-
-## 12. 如何新增一个 Tab 页面
-
-假设要新增 `Settings` 页面，建议步骤如下：
-
-1. 在 `src/screens/SettingsScreen.tsx` 新建页面组件。
-2. 在 `src/navigation/types.ts` 增加：
-
-```ts
-Settings: undefined;
-```
-
-3. 在 `src/navigation/RootNavigator.tsx` 导入页面：
-
-```ts
-import { SettingsScreen } from "../screens/SettingsScreen";
-```
-
-4. 在 `Tab.Navigator` 内增加：
-
-```tsx
-<Tab.Screen name="Settings" component={SettingsScreen} />
-```
-
-5. 在 `getTabIcon` 里增加 Settings 的图标映射，例如：
-
-```ts
-if (routeName === "Settings") {
-  return focused ? "settings" : "settings-outline";
-}
-```
-
-6. 如果需要不同 header 标题，调整 `screenOptions` 或给对应 `Tab.Screen` 添加 `options`。
-
-## 13. 如何把 AI 页面扩展成聊天功能
-
-当前 `AiScreen` 是最适合承载 ChatGPT 聊天功能的位置。推荐演进方向：
-
-1. 先在 `AiScreen` 内实现本地 UI 状态：消息列表、输入框、发送按钮、loading 状态、错误状态。
-2. 再抽离 API 层，例如新增 `src/services/openaiClient.ts` 或 `src/api/chat.ts`。
-3. 不要在前端源码中硬编码 API key。移动端应用无法真正保密前端内置 key，生产场景应通过自己的后端代理调用模型服务。
-4. 如果要保存历史记录，再考虑引入本地存储或后端账户体系。
-5. 当页面逻辑变复杂时，再拆分组件，例如：
-
-```text
-src/screens/AiScreen.tsx
-src/components/chat/MessageList.tsx
-src/components/chat/MessageBubble.tsx
-src/components/chat/Composer.tsx
-src/services/chatService.ts
-```
-
-当前项目没有上述文件，它们只是后续可选扩展方向。
+- 真实 ChatGPT API 调用
+- AI 聊天消息列表、输入框、流式输出
+- 用户登录/注册
+- 真实搜索请求或搜索结果过滤
+- 后端接口层
+- 本地持久化
+- 深色模式
+- 单元测试、组件测试、E2E 测试
+- 生产级构建配置
+- App icon 和 splash
 
 ## 14. 维护注意事项
 
 - 不要删除 `index.js` 顶部的 `import "react-native-gesture-handler";`。
-- 修改 Reanimated 配置时，确保 `react-native-reanimated/plugin` 仍然在 Babel plugins 最后。
-- 当前 TypeScript 版本约为 6.0，`tsconfig.json` 中的 `baseUrl` 已触发弃用提示；做类型检查前需要处理 `ignoreDeprecations` 或迁移配置。
-- 新增 navigator 时要确认仍被 `NavigationContainer` 包裹。
-- 新增使用安全区域的组件时，应继续依赖 `SafeAreaProvider` 和 `useSafeAreaInsets`。
-- 修改路由名称时，需要同步更新：
+- 修改底部 tabbar 高度或位置时，同步检查：
+  - Home 的 `feedBottomPadding`
+  - PetHud 的 `bottomClearance`
+- 修改路由名时，同步更新：
   - `RootTabParamList`
   - `Tab.Screen name`
+  - `getTabLabel`
   - `getTabIcon`
-  - 所有导航跳转调用处
-- `assets` 当前只有 `.gitkeep`，如果新增图片或字体，应同步检查 `app.json` 的 asset 配置是否满足需求。
-- 当前不是 Git 仓库，目录里没有 `.git`。如果要进行版本管理，需要先初始化或放入已有仓库。
+  - 所有 `navigation.navigate(...)`
+- 新增翻译 key 时必须同步补齐中英文。
+- 首页频道切换使用自定义 `PanResponder + Animated.View`，修改时要同时验证左右切换和上下滚动。
+- 首页瀑布流是手动两列 masonry，不是 `FlatList numColumns`。
+- 网络图片来自外部 URL，离线或网络异常时图片可能不显示。
+- 当前开发环境建议优先使用 `.vscode/tasks.json` 的 `Expo: start`。
 
-## 15. 当前未实现能力
+## 15. 快速理解清单
 
-以下能力从项目名或页面名看起来可能会被期待，但当前代码并未实现：
+如果需要快速恢复上下文，建议按顺序阅读：
 
-- ChatGPT API 调用
-- 聊天消息 UI
-- AI 响应流式输出
-- 用户登录/注册
-- Profile 数据读取或编辑
-- 设置页
-- 深色模式
-- 多语言
-- 错误边界
-- 单元测试 / 组件测试
-- E2E 测试
-- 环境变量管理
-- 生产构建配置
-- App 图标和启动屏
+1. `package.json`
+2. `App.tsx`
+3. `src/navigation/types.ts`
+4. `src/navigation/RootNavigator.tsx`
+5. `src/i18n/language.tsx`
+6. `src/screens/HomeScreen.tsx`
+7. `src/screens/SearchScreen.tsx`
+8. `src/screens/AiScreen.tsx`
+9. `src/screens/ProfileScreen.tsx`
+10. `src/pet/VirtualPetModule.tsx`
+11. `src/pet/engine/usePetStateMachine.ts`
+12. `src/pet/ui/PetHud.tsx`
 
-## 16. 快速理解清单
-
-如果之后只想用最短时间恢复项目上下文，按下面顺序读：
-
-1. `package.json`：确认技术栈和启动脚本。
-2. `index.js`：确认 Expo 注册入口。
-3. `App.tsx`：确认全局 Provider 和导航容器。
-4. `src/navigation/types.ts`：确认路由类型。
-5. `src/navigation/RootNavigator.tsx`：确认 Tab 结构、header 和图标映射。
-6. `src/components/AppHeader.tsx`：确认顶部栏实现。
-7. `src/screens/*.tsx`：确认各页面当前业务内容。
-
-当前项目的核心可以概括为：
+当前项目一句话概括：
 
 ```text
-Expo 入口 -> App Provider -> React Navigation Bottom Tabs -> 三个占位页面
+Expo App -> SafeArea + Language Provider -> Bottom Tabs -> 首页内容流 / 工作台演示 / 3D 虚拟宠物 / 隐藏搜索页
 ```
 
-## 17. 文件职责速查表
+## 16. 文件职责速查
 
-| 文件 | 职责 | 当前复杂度 |
-| --- | --- | --- |
-| `index.js` | 注册 Expo 根组件，初始化 gesture handler | 很低 |
-| `App.tsx` | 全局 Provider、导航容器、状态栏 | 很低 |
-| `src/navigation/types.ts` | 定义 Tab 路由参数类型 | 很低 |
-| `src/navigation/RootNavigator.tsx` | 底部 Tab 导航、统一 header、Tab 图标和样式 | 中低 |
-| `src/components/AppHeader.tsx` | 顶部标题栏和安全区域适配 | 中低 |
-| `src/screens/HomeScreen.tsx` | 首页占位 | 很低 |
-| `src/screens/AiScreen.tsx` | AI 页占位 | 很低 |
-| `src/screens/ProfileScreen.tsx` | 个人页占位 | 很低 |
-| `app.json` | Expo 应用元配置 | 很低 |
-| `babel.config.js` | Babel 和 Reanimated 插件配置 | 很低 |
-| `tsconfig.json` | TypeScript strict 和路径别名配置 | 很低 |
-| `package.json` | 依赖和脚本 | 很低 |
+| 文件 | 职责 |
+| --- | --- |
+| `index.js` | 注册 Expo 根组件，初始化 gesture handler |
+| `App.tsx` | 全局 Provider、导航容器、状态栏 |
+| `src/i18n/language.tsx` | 中英文翻译和语言切换 |
+| `src/navigation/types.ts` | 路由参数类型 |
+| `src/navigation/RootNavigator.tsx` | Bottom Tabs、隐藏搜索路由、悬浮 tabbar |
+| `src/components/AppHeader.tsx` | 默认页面 header |
+| `src/screens/HomeScreen.tsx` | 首页频道、瀑布流、横向切换、搜索入口 |
+| `src/screens/SearchScreen.tsx` | 搜索页基础 UI |
+| `src/screens/AiScreen.tsx` | 工作台演示：音频、震动、语言切换 |
+| `src/screens/ProfileScreen.tsx` | 虚拟宠物页入口 |
+| `src/pet/VirtualPetModule.tsx` | 虚拟宠物布局整合 |
+| `src/pet/engine/*` | 宠物状态机和类型 |
+| `src/pet/interaction/*` | 宠物手势和命中测试 |
+| `src/pet/renderer/*` | 3D 宠物渲染 |
+| `src/pet/ui/PetHud.tsx` | 宠物状态 HUD 和操作按钮 |
+| `.vscode/tasks.json` | 无 npm/PATH 依赖的 Expo 启动任务 |
 
-## 18. 后续开发建议
+## 17. 后续开发建议
 
-短期建议：
-
-- 如果目标是做 ChatGPT Demo，优先完善 `AiScreen`，先做本地聊天 UI，再接 API。
-- 如果目标是做产品原型，补齐 `app.json` 的 icon、splash、bundle id/package name。
-- 如果代码继续增长，提取共享颜色、间距、字体等 design tokens，例如 `src/theme.ts`。
-- 如果引入真实 API，新增 service 层并避免把密钥写入客户端。
-- 如果页面需要复杂布局，优先保证 iOS、Android、Web 三端表现一致。
-
-测试建议：
-
-- 当前项目没有测试框架配置。由于代码很少，暂时可以依赖 TypeScript 检查和手动运行。
-- 当增加聊天逻辑、API 层或数据转换时，应补充单元测试。
-- 当增加关键用户流程时，可考虑后续引入 E2E 测试。
+- 首页若继续追求小红书效果，可引入成熟 masonry 列表库，减少手写高度估算误差。
+- 搜索页可增加本地过滤或接入真实接口。
+- AI 页如要变成 ChatGPT Demo，应先实现消息 UI，再抽 service/API 层。
+- 虚拟宠物可增加本地存档，保存亲密度、精力、饥饿值。
+- 引入真实 API 前不要在客户端硬编码密钥。
+- UI 继续扩展时建议抽出 theme tokens，统一颜色、间距和字号。

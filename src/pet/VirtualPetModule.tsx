@@ -37,7 +37,14 @@ export const VirtualPetModule = memo(function VirtualPetModule() {
           </View>
           <View style={styles.levelPill}>
             <Ionicons name="flame" size={18} color="#F97316" />
-            <Text style={styles.levelText}>Lv. 7</Text>
+            <Text
+              adjustsFontSizeToFit
+              minimumFontScale={0.72}
+              numberOfLines={1}
+              style={styles.levelText}
+            >
+              Lv. 7
+            </Text>
           </View>
         </View>
 
@@ -108,6 +115,7 @@ const styles = StyleSheet.create({
     color: "#7C2D12",
     fontSize: 16,
     fontWeight: "800",
-    letterSpacing: 0
+    letterSpacing: 0,
+    maxWidth: 52
   }
 });

@@ -12,7 +12,14 @@ export function AppHeader({ title }: AppHeaderProps) {
   return (
     <View style={[styles.safeArea, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <Text style={styles.title}>{title}</Text>
+        <Text
+          adjustsFontSizeToFit
+          minimumFontScale={0.7}
+          numberOfLines={1}
+          style={styles.title}
+        >
+          {title}
+        </Text>
       </View>
     </View>
   );
@@ -40,6 +47,7 @@ const styles = StyleSheet.create({
     color: "#111827",
     fontSize: 18,
     fontWeight: "700",
-    letterSpacing: 0
+    letterSpacing: 0,
+    maxWidth: "100%"
   }
 });

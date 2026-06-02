@@ -1,14 +1,17 @@
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { StyleSheet, View } from "react-native";
+import { BlurView } from "expo-blur";
+import { StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppHeader } from "../components/AppHeader";
 import { useLanguage } from "../i18n/language";
-import { AiScreen } from "../screens/AiScreen";
 import { HomeScreen } from "../screens/HomeScreen";
+import { PetScreen } from "../screens/PetScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
+import { SearchScreen } from "../screens/SearchScreen";
+import { ToolScreen } from "../screens/ToolScreen";
 import type { RootTabParamList } from "./types";
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -16,58 +19,90 @@ const TAB_BAR_CONTENT_HEIGHT = 60;
 
 export function RootNavigator() {
   const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
   const { t } = useLanguage();
-  const bottomInset = Math.max(insets.bottom, 8);
+  const bottomOffset = Math.max(insets.bottom, 10);
+  const tabBarSideInset =
+    width >= 768 ? Math.max((width - 560) / 2, 32) : 26;
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         header: () => <AppHeader title="ChatGPT Demo" />,
-        headerShown: route.name !== "Home" && route.name !== "Profile",
-        tabBarActiveTintColor: "#222222",
-        tabBarInactiveTintColor: "#9CA3AF",
-        tabBarLabel: getTabLabel(route.name, t),
-        tabBarLabelStyle: {
-          fontSize: 19,
-          fontWeight: "600",
-          lineHeight: 24,
-          marginBottom: 0
-        },
+        headerShown:
+          route.name !== "Home" &&
+          route.name !== "AI" &&
+          route.name !== "Pet" &&
+          route.name !== "Profile" &&
+          route.name !== "Search",
+        tabBarActiveTintColor: "#1677FF",
+        tabBarInactiveTintColor: "#1F2937",
+        tabBarLabelPosition: "below-icon",
+        tabBarLabel: ({ color }) => (
+          <Text
+            adjustsFontSizeToFit
+            minimumFontScale={0.68}
+            numberOfLines={1}
+            style={[styles.tabBarLabel, { color }]}
+          >
+            {getTabLabel(route.name, t)}
+          </Text>
+        ),
         tabBarItemStyle: {
+          alignItems: "center",
           height: TAB_BAR_CONTENT_HEIGHT,
           justifyContent: "center",
-          paddingBottom: 4,
+          paddingBottom: 6,
           paddingTop: 6
         },
-        tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopColor: "#F1F5F9",
-          borderTopWidth: 1,
-          elevation: 8,
-          height: TAB_BAR_CONTENT_HEIGHT + bottomInset,
-          paddingBottom: bottomInset,
-          paddingTop: 0,
-          shadowColor: "#111827",
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.05,
-          shadowRadius: 10
+        tabBarIconStyle: {
+          height: 24,
+          marginBottom: 2,
+          marginTop: 0,
+          width: 24
         },
-        tabBarIcon: () => {
-          if (route.name !== "AI") {
-            return null;
-          }
-
-          return (
-            <View style={styles.createButton}>
-              <Ionicons name="add" size={36} color="#FFFFFF" />
-            </View>
-          );
-        }
+        tabBarStyle:
+          route.name === "Search"
+            ? styles.hiddenTabBar
+            : [
+                styles.floatingTabBar,
+                {
+                  bottom: bottomOffset,
+                  left: tabBarSideInset,
+                  right: tabBarSideInset
+                }
+              ],
+        tabBarBackground: () => (
+          <BlurView
+            intensity={88}
+            tint="systemChromeMaterialLight"
+            experimentalBlurMethod="dimezisBlurView"
+            style={styles.tabBarGlass}
+          >
+            <View style={styles.tabBarHighlight} />
+            <View style={styles.tabBarVeil} />
+          </BlurView>
+        ),
+        tabBarIcon: ({ color, focused }) => (
+          <Ionicons
+            name={getTabIcon(route.name, focused)}
+            size={22}
+            color={color}
+          />
+        )
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="AI" component={AiScreen} />
+      <Tab.Screen name="AI" component={ToolScreen} />
+      <Tab.Screen name="Pet" component={PetScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          tabBarButton: () => null
+        }}
+      />
     </Tab.Navigator>
   );
 }
@@ -81,20 +116,87 @@ function getTabLabel(
   }
 
   if (routeName === "AI") {
+    return t("tabs.workbench");
+  }
+
+  if (routeName === "Pet") {
+    return t("tabs.pet");
+  }
+
+  if (routeName === "Search") {
     return "";
   }
 
   return t("tabs.profile");
 }
 
+function getTabIcon(
+  routeName: keyof RootTabParamList,
+  focused: boolean
+): keyof typeof Ionicons.glyphMap {
+  if (routeName === "Home") {
+    return focused ? "home" : "home-outline";
+  }
+
+  if (routeName === "AI") {
+    return focused ? "briefcase" : "briefcase-outline";
+  }
+
+  if (routeName === "Pet") {
+    return focused ? "flame" : "flame-outline";
+  }
+
+  if (routeName === "Search") {
+    return "search-outline";
+  }
+
+  return focused ? "person" : "person-outline";
+}
+
 const styles = StyleSheet.create({
-  createButton: {
-    alignItems: "center",
-    backgroundColor: "#F43F5E",
-    borderRadius: 13,
-    height: 48,
-    justifyContent: "center",
-    marginTop: 8,
-    width: 72
+  floatingTabBar: {
+    backgroundColor: "rgba(238, 248, 255, 0.34)",
+    borderColor: "rgba(255, 255, 255, 0.96)",
+    borderRadius: 30,
+    borderTopWidth: 0,
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 16,
+    height: TAB_BAR_CONTENT_HEIGHT,
+    overflow: "hidden",
+    paddingBottom: 0,
+    paddingTop: 0,
+    position: "absolute",
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.16,
+    shadowRadius: 20
+  },
+  hiddenTabBar: {
+    display: "none"
+  },
+  tabBarGlass: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(232, 246, 255, 0.24)"
+  },
+  tabBarHighlight: {
+    backgroundColor: "rgba(255, 255, 255, 0.58)",
+    height: 1,
+    left: 16,
+    position: "absolute",
+    right: 16,
+    top: 0
+  },
+  tabBarVeil: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(255, 255, 255, 0.24)"
+  },
+  tabBarLabel: {
+    fontSize: 10,
+    fontWeight: "600",
+    letterSpacing: 0,
+    lineHeight: 13,
+    marginBottom: 0,
+    maxWidth: 58,
+    textAlign: "center"
   }
 });

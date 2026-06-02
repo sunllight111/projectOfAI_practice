@@ -1,9 +1,12 @@
 import React, { memo, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber/native";
 import type { Group, Mesh } from "three";
-import { MathUtils } from "three";
 
 import type { PetSnapshot } from "../engine/petTypes";
+
+declare const require: <T>(id: string) => T;
+
+const { MathUtils } = require<typeof import("three")>("three");
 
 type PetModelProps = {
   snapshot: PetSnapshot;
