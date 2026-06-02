@@ -1,26 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+
+import { VirtualPetModule } from "../pet/VirtualPetModule";
 
 export function ProfileScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile</Text>
-    </View>
-  );
+  return <VirtualPetModule />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 24
-  },
-  title: {
-    color: "#111827",
-    fontSize: 28,
-    fontWeight: "700",
-    letterSpacing: 0
-  }
-});

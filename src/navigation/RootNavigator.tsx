@@ -5,6 +5,7 @@ import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppHeader } from "../components/AppHeader";
+import { useLanguage } from "../i18n/language";
 import { AiScreen } from "../screens/AiScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
@@ -15,16 +16,17 @@ const TAB_BAR_CONTENT_HEIGHT = 60;
 
 export function RootNavigator() {
   const insets = useSafeAreaInsets();
+  const { t } = useLanguage();
   const bottomInset = Math.max(insets.bottom, 8);
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         header: () => <AppHeader title="ChatGPT Demo" />,
-        headerShown: route.name !== "Home",
+        headerShown: route.name !== "Home" && route.name !== "Profile",
         tabBarActiveTintColor: "#222222",
         tabBarInactiveTintColor: "#9CA3AF",
-        tabBarLabel: getTabLabel(route.name),
+        tabBarLabel: getTabLabel(route.name, t),
         tabBarLabelStyle: {
           fontSize: 19,
           fontWeight: "600",
@@ -70,16 +72,19 @@ export function RootNavigator() {
   );
 }
 
-function getTabLabel(routeName: keyof RootTabParamList) {
+function getTabLabel(
+  routeName: keyof RootTabParamList,
+  t: ReturnType<typeof useLanguage>["t"]
+) {
   if (routeName === "Home") {
-    return "首页";
+    return t("tabs.home");
   }
 
   if (routeName === "AI") {
     return "";
   }
 
-  return "我";
+  return t("tabs.profile");
 }
 
 const styles = StyleSheet.create({

@@ -11,11 +11,13 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Language, TranslationKey, useLanguage } from "../i18n/language";
+
 type FeedItem = {
   id: string;
-  title: string;
-  author: string;
-  likes: string;
+  title: Record<Language, string>;
+  author: Record<Language, string>;
+  likes: Record<Language, string>;
   image: string;
   avatar: string;
   tall?: boolean;
@@ -23,14 +25,31 @@ type FeedItem = {
   video?: boolean;
 };
 
-const CHANNELS = ["推荐", "RED", "直播", "短剧", "美食", "旅行", "穿搭"];
+const CHANNEL_KEYS: TranslationKey[] = [
+  "home.channels.recommend",
+  "home.channels.red",
+  "home.channels.live",
+  "home.channels.shortDrama",
+  "home.channels.food",
+  "home.channels.travel",
+  "home.channels.outfit"
+];
 
 const FEED_ITEMS: FeedItem[] = [
   {
     id: "food",
-    title: "香迷糊了！这才是鸡肉的天花板做法！！",
-    author: "煲汤小馋猫",
-    likes: "3765",
+    title: {
+      zh: "香迷糊了，这才是鸡肉的天花板做法！",
+      en: "This chicken recipe is pure comfort food."
+    },
+    author: {
+      zh: "煲汤小厨",
+      en: "Soup Kitchen"
+    },
+    likes: {
+      zh: "3765",
+      en: "3,765"
+    },
     liked: true,
     image:
       "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=900&q=80",
@@ -39,9 +58,18 @@ const FEED_ITEMS: FeedItem[] = [
   },
   {
     id: "trail",
-    title: "Hello, I'm back.",
-    author: "MATI",
-    likes: "1546",
+    title: {
+      zh: "Hello, I'm back.",
+      en: "Hello, I'm back."
+    },
+    author: {
+      zh: "MATI",
+      en: "MATI"
+    },
+    likes: {
+      zh: "1546",
+      en: "1,546"
+    },
     video: true,
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80",
@@ -50,9 +78,18 @@ const FEED_ITEMS: FeedItem[] = [
   },
   {
     id: "hair",
-    title: "全部暴露！理发把我当时社死！",
-    author: "小封要逃离...",
-    likes: "4.5万",
+    title: {
+      zh: "全部曝光！理发师把我当时尚实验了",
+      en: "Full reveal: my stylist tried something bold."
+    },
+    author: {
+      zh: "小封要逃离",
+      en: "Faye Notes"
+    },
+    likes: {
+      zh: "4.5万",
+      en: "45K"
+    },
     tall: true,
     image:
       "https://images.unsplash.com/photo-1522336572468-97b06e8ef143?auto=format&fit=crop&w=900&q=80",
@@ -61,9 +98,18 @@ const FEED_ITEMS: FeedItem[] = [
   },
   {
     id: "tree",
-    title: "一树一世界",
-    author: "叮咚",
-    likes: "5.8万",
+    title: {
+      zh: "一树一世界",
+      en: "A whole world in one tree."
+    },
+    author: {
+      zh: "叮咚",
+      en: "Ding Dong"
+    },
+    likes: {
+      zh: "5.8万",
+      en: "58K"
+    },
     image:
       "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=80",
     avatar:
@@ -71,9 +117,18 @@ const FEED_ITEMS: FeedItem[] = [
   },
   {
     id: "room",
-    title: "周末宅家也要把松弛感拿捏住",
-    author: "橘子气泡水",
-    likes: "8922",
+    title: {
+      zh: "周末宅家也要把松弛感拿捏住",
+      en: "Weekend at home, but make it relaxed."
+    },
+    author: {
+      zh: "橘子气泡水",
+      en: "Orange Soda"
+    },
+    likes: {
+      zh: "8922",
+      en: "8,922"
+    },
     image:
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80",
     avatar:
@@ -81,9 +136,18 @@ const FEED_ITEMS: FeedItem[] = [
   },
   {
     id: "city",
-    title: "重庆的夜风，真的会把人哄好",
-    author: "山城漫游",
-    likes: "2.3万",
+    title: {
+      zh: "重庆的夜风，真的会把人哄好",
+      en: "Chongqing night air can fix your mood."
+    },
+    author: {
+      zh: "山城漫游",
+      en: "City Wanderer"
+    },
+    likes: {
+      zh: "2.3万",
+      en: "23K"
+    },
     tall: true,
     image:
       "https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80",
@@ -94,45 +158,56 @@ const FEED_ITEMS: FeedItem[] = [
 
 export function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const { language, t } = useLanguage();
 
   return (
     <View style={styles.screen}>
       <View style={[styles.topSafeArea, { paddingTop: insets.top }]}>
         <View style={styles.topBar}>
-          <Pressable style={styles.iconButton} accessibilityLabel="打开菜单">
+          <Pressable
+            style={styles.iconButton}
+            accessibilityLabel={t("home.accessibility.menu")}
+          >
             <Ionicons name="menu-outline" size={32} color="#222222" />
           </Pressable>
 
           <View style={styles.mainTabs}>
             <View style={styles.followTabWrap}>
-              <Text style={styles.inactiveMainTab}>关注</Text>
+              <Text style={styles.inactiveMainTab}>
+                {t("home.tabs.following")}
+              </Text>
               <View style={styles.badge}>
                 <Text style={styles.badgeText}>16</Text>
               </View>
             </View>
             <View style={styles.activeMainTabWrap}>
-              <Text style={styles.activeMainTab}>发现</Text>
+              <Text style={styles.activeMainTab}>
+                {t("home.tabs.discover")}
+              </Text>
               <View style={styles.activeUnderline} />
             </View>
-            <Text style={styles.inactiveMainTab}>重庆</Text>
+            <Text style={styles.inactiveMainTab}>{t("home.tabs.city")}</Text>
           </View>
 
-          <Pressable style={styles.iconButton} accessibilityLabel="搜索">
+          <Pressable
+            style={styles.iconButton}
+            accessibilityLabel={t("home.accessibility.search")}
+          >
             <Ionicons name="search-outline" size={32} color="#222222" />
           </Pressable>
         </View>
 
         <View style={styles.channelBar}>
-          {CHANNELS.map((channel, index) => (
+          {CHANNEL_KEYS.map((channelKey, index) => (
             <Text
-              key={channel}
+              key={channelKey}
               numberOfLines={1}
               style={[
                 styles.channelText,
                 index === 0 && styles.channelTextActive
               ]}
             >
-              {channel}
+              {t(channelKey)}
             </Text>
           ))}
           <Ionicons name="chevron-down" size={22} color="#222222" />
@@ -143,7 +218,7 @@ export function HomeScreen() {
         data={FEED_ITEMS}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        renderItem={renderFeedItem}
+        renderItem={(info) => renderFeedItem(info, language)}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.feedContent}
         columnWrapperStyle={styles.feedRow}
@@ -152,7 +227,10 @@ export function HomeScreen() {
   );
 }
 
-function renderFeedItem({ item }: ListRenderItemInfo<FeedItem>) {
+function renderFeedItem(
+  { item }: ListRenderItemInfo<FeedItem>,
+  language: Language
+) {
   return (
     <View style={styles.card}>
       <View>
@@ -168,12 +246,12 @@ function renderFeedItem({ item }: ListRenderItemInfo<FeedItem>) {
       </View>
 
       <View style={styles.cardBody}>
-        <Text style={styles.cardTitle}>{item.title}</Text>
+        <Text style={styles.cardTitle}>{item.title[language]}</Text>
         <View style={styles.metaRow}>
           <View style={styles.authorRow}>
             <Image source={{ uri: item.avatar }} style={styles.avatar} />
             <Text numberOfLines={1} style={styles.author}>
-              {item.author}
+              {item.author[language]}
             </Text>
           </View>
           <View style={styles.likeRow}>
@@ -182,7 +260,7 @@ function renderFeedItem({ item }: ListRenderItemInfo<FeedItem>) {
               size={20}
               color={item.liked ? "#F43F5E" : "#7B7B7B"}
             />
-            <Text style={styles.likes}>{item.likes}</Text>
+            <Text style={styles.likes}>{item.likes[language]}</Text>
           </View>
         </View>
       </View>
@@ -217,8 +295,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     flexDirection: "row",
-    justifyContent: "center",
-    gap: 34
+    gap: 28,
+    justifyContent: "center"
   },
   activeMainTabWrap: {
     alignItems: "center",
@@ -272,19 +350,19 @@ const styles = StyleSheet.create({
   },
   channelText: {
     color: "#8E8E93",
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: "500",
     letterSpacing: 0,
-    maxWidth: 52
+    maxWidth: 76
   },
   channelTextActive: {
     color: "#191919",
     fontWeight: "700"
   },
   feedContent: {
+    paddingBottom: 18,
     paddingHorizontal: 8,
-    paddingTop: 8,
-    paddingBottom: 18
+    paddingTop: 8
   },
   feedRow: {
     alignItems: "flex-start",
@@ -317,9 +395,9 @@ const styles = StyleSheet.create({
     width: 34
   },
   cardBody: {
+    paddingBottom: 12,
     paddingHorizontal: 10,
-    paddingTop: 10,
-    paddingBottom: 12
+    paddingTop: 10
   },
   cardTitle: {
     color: "#222222",
