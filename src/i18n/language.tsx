@@ -83,6 +83,23 @@ export type TranslationKey =
   | "tool.stats.pending"
   | "tool.stats.todayQueries"
   | "tool.stats.trainingProgress"
+  | "entropy.slot.result.lose"
+  | "entropy.slot.result.win"
+  | "entropy.slot.spin"
+  | "entropy.slot.title"
+  | "entropy.title"
+  | "entropy.wheel.result"
+  | "entropy.wheel.segments.diamond"
+  | "entropy.wheel.segments.gold"
+  | "entropy.wheel.segments.lucky"
+  | "entropy.wheel.segments.miss"
+  | "entropy.wheel.segments.mystery"
+  | "entropy.wheel.segments.platinum"
+  | "entropy.wheel.segments.silver"
+  | "entropy.wheel.segments.special"
+  | "entropy.wheel.spin"
+  | "entropy.wheel.title"
+  | "tabs.entropy"
   | "tool.summary.status"
   | "tool.summary.text"
   | "tool.summary.title"
@@ -154,7 +171,7 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
       "\u914d\u65b9\u3001\u6e29\u5ea6\u3001\u538b\u529b\u53c2\u6570\u901f\u67e5",
     "tool.items.parameter.title": "\u53c2\u6570\u67e5\u8be2",
     "tool.items.quiz.description":
-      "\u6bcf\u65e5 10 \u9898\uff0c\u5de9\u56fa\u57fa\u7840\u77e5\u8bc6",
+      "\u6bcf\u65e5\u4e00\u9898\uff0c\u5de9\u56fa\u57fa\u7840\u77e5\u8bc6",
     "tool.items.quiz.title": "\u5c0f\u793c\u5237\u9898",
     "tool.items.simulation.description":
       "\u4eff\u771f\u6f14\u7ec3\u4e0e\u5f02\u5e38\u5904\u7f6e",
@@ -170,6 +187,23 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.stats.pending": "\u5f85\u5904\u7406",
     "tool.stats.todayQueries": "\u4eca\u65e5\u67e5\u8be2",
     "tool.stats.trainingProgress": "\u57f9\u8bad\u8fdb\u5ea6",
+    "entropy.slot.result.lose": "\u518d\u63a5\u518d\u5389\uff5e",
+    "entropy.slot.result.win": "\ud83c\udf89 \u606d\u559c\u4e2d\u5956\uff01",
+    "entropy.slot.spin": "\u8f6c\u52a8\u8001\u864e\u673a",
+    "entropy.slot.title": "\u8001\u864e\u673a",
+    "entropy.title": "\u71b5",
+    "entropy.wheel.result": "\u7ed3\u679c\uff1a",
+    "entropy.wheel.segments.diamond": "\u94bb\u77f3",
+    "entropy.wheel.segments.gold": "\u91d1\u5e01",
+    "entropy.wheel.segments.lucky": "\u5e78\u8fd0",
+    "entropy.wheel.segments.miss": "\u672a\u4e2d",
+    "entropy.wheel.segments.mystery": "\u795e\u79d8",
+    "entropy.wheel.segments.platinum": "\u767d\u91d1",
+    "entropy.wheel.segments.silver": "\u94f6\u5e01",
+    "entropy.wheel.segments.special": "\u7279\u522b\u5956",
+    "entropy.wheel.spin": "\u8f6c\u52a8\u8f6c\u76d8",
+    "entropy.wheel.title": "\u5927\u8f6c\u76d8",
+    "tabs.entropy": "\u71b5",
     "tool.summary.status": "\u8fd0\u884c\u4e2d",
     "tool.summary.text": "2 \u6761\u6307\u6807\u9884\u8b66\uff0c6 \u9879\u4efb\u52a1\u5f85\u786e\u8ba4",
     "tool.summary.title": "\u4eca\u65e5\u5de5\u827a\u6982\u89c8",
@@ -229,7 +263,7 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.items.monitor.title": "Live monitor",
     "tool.items.parameter.description": "Recipe, temperature, and pressure lookup",
     "tool.items.parameter.title": "Parameters",
-    "tool.items.quiz.description": "10 daily questions to build fundamentals",
+    "tool.items.quiz.description": "One daily question to build fundamentals",
     "tool.items.quiz.title": "Daily quiz",
     "tool.items.simulation.description": "Simulation drills and abnormal handling",
     "tool.items.simulation.title": "Simulator",
@@ -243,6 +277,23 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.stats.pending": "Pending",
     "tool.stats.todayQueries": "Queries today",
     "tool.stats.trainingProgress": "Training",
+    "entropy.slot.result.lose": "Try again～",
+    "entropy.slot.result.win": "🎉 Jackpot!",
+    "entropy.slot.spin": "Spin Slots",
+    "entropy.slot.title": "Slot Machine",
+    "entropy.title": "Entropy",
+    "entropy.wheel.result": "Result: ",
+    "entropy.wheel.segments.diamond": "Diamond",
+    "entropy.wheel.segments.gold": "Gold",
+    "entropy.wheel.segments.lucky": "Lucky",
+    "entropy.wheel.segments.miss": "Miss",
+    "entropy.wheel.segments.mystery": "Mystery",
+    "entropy.wheel.segments.platinum": "Platinum",
+    "entropy.wheel.segments.silver": "Silver",
+    "entropy.wheel.segments.special": "Special",
+    "entropy.wheel.spin": "Spin Wheel",
+    "entropy.wheel.title": "Lucky Wheel",
+    "tabs.entropy": "Entropy",
     "tool.summary.status": "Running",
     "tool.summary.text": "2 metric alerts, 6 tasks pending confirmation",
     "tool.summary.title": "Today's process overview",

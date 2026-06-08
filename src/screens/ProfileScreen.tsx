@@ -8,11 +8,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  useWindowDimensions,
   View
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const heroImage = require("../../assets/profile-hero.jpg");
+// const userImage = require("../../assets/profile-hero.jpg");
+const userImage = require("../../assets/Hades_Launch.png");
 const avatarImage = require("../../assets/icon.png");
 const PROFILE_NAME = "小火龙";
 const PROFILE_GENDER = "\u7537";
@@ -65,7 +67,10 @@ const SETTINGS = [
 export function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const tabBarHeight = useBottomTabBarHeight();
+  const { height: windowHeight } = useWindowDimensions();
   const [showTopTabbar, setShowTopTabbar] = useState(false);
+
+  const userHeight = windowHeight * 0.3;
 
   return (
     <View style={styles.screen}>
@@ -85,17 +90,14 @@ export function ProfileScreen() {
               <Text numberOfLines={1} style={styles.floatingName}>
                 {PROFILE_NAME}
               </Text>
-            </View>
-            <View style={styles.floatingGenderPill}>
-              <Ionicons name="male" size={12} color="#2563EB" />
-              <Text numberOfLines={1} style={styles.floatingGenderText}>
-                {PROFILE_GENDER}
+              <Text numberOfLines={1} style={styles.floatingCompany}>
+                {PROFILE_COMPANY}
               </Text>
             </View>
             <View style={styles.floatingProfileTabs}>
-              <Text numberOfLines={1} style={styles.floatingProfileTabActive}>
+              {/* <Text numberOfLines={1} style={styles.floatingProfileTabActive}>
                 主页
-              </Text>
+              </Text> */}
               {/* <Text numberOfLines={1} style={styles.floatingProfileTab}>
                 动态
               </Text>
@@ -117,18 +119,28 @@ export function ProfileScreen() {
         }}
         scrollEventThrottle={16}
         contentContainerStyle={{
-          paddingBottom: Math.max(tabBarHeight + insets.bottom + 28, 112)
+          paddingBottom: Math.max(tabBarHeight + insets.bottom + 28, 100)
         }}
       >
         <ImageBackground
-          source={heroImage}
-          imageStyle={styles.heroImage}
+          source={userImage}
           resizeMode="cover"
-          style={[styles.hero, { paddingTop: insets.top + 18 }]}
+          style={[
+            styles.user,
+            {
+              height: userHeight,
+              paddingTop: insets.top + 18
+            }
+          ]}
         >
-          <View style={styles.heroShade} />
+          <View style={styles.userShade} />
 
-          <View style={styles.heroContent}>
+          <View
+            style={[
+              styles.userContent,
+              { bottom: userHeight * 0.1 }
+            ]}
+          >
             <View style={styles.avatarStage}>
               <View style={styles.avatarRing}>
                 <Image source={avatarImage} style={styles.avatarImage} />
@@ -162,17 +174,10 @@ export function ProfileScreen() {
         </ImageBackground>
 
         <View style={styles.contentSheet}>
-          <View style={styles.sheetTabs}>
-            <View style={styles.sheetTabsInner}>
-              <View style={styles.activeTab}>
-                <Text style={styles.activeTabText}>主页</Text>
-                <View style={styles.activeTabLine} />
-              </View>
-              {/* <Text style={styles.tabText}>动态</Text>
-              <Text style={styles.tabText}>收藏</Text> */}
-              {/* <Ionicons name="search" size={22} color="#8F949B" /> */}
-            </View>
-          </View>
+          {/* <View style={styles.activeTab}>
+            <Text style={styles.activeTabText}>主页</Text>
+            <View style={styles.activeTabLine} />
+          </View> */}
 
           <View style={styles.contentBody}>
           {/* <View style={styles.summaryCard}>
@@ -273,14 +278,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#F2F3F5",
     flex: 1
   },
-  hero: {
-    minHeight: 304,
+  user: {
     overflow: "hidden",
     width: "100%"
   },
   floatingProfileBar: {
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
-    borderBottomColor: "rgba(229, 231, 235, 0.92)",
+    backgroundColor: "#FFFFFF",
+    borderBottomColor: "#E5E7EB",
     borderBottomWidth: StyleSheet.hairlineWidth,
     elevation: 12,
     left: 0,
@@ -320,6 +324,13 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     letterSpacing: 0,
     lineHeight: 18
+  },
+  floatingCompany: {
+    color: "#6B7280",
+    fontSize: 11,
+    fontWeight: "600",
+    letterSpacing: 1,
+    marginTop: 2
   },
   floatingGenderPill: {
     alignItems: "center",
@@ -362,25 +373,19 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     paddingHorizontal: 4
   },
-  heroImage: {
-    height: "100%",
-    width: "100%"
-  },
-  heroShade: {
+  userShade: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(8, 13, 22, 0.18)"
+    // backgroundColor: "rgba(8, 13, 22, 0.18)"
+    // backgroundColor: "white"
   },
-  heroContent: {
+  userContent: {
     alignItems: "center",
-    alignSelf: "center",
-    flex: 1,
     flexDirection: "row",
     gap: 14,
-    justifyContent: "flex-end",
-    maxWidth: 560,
-    paddingBottom: 42,
+    left: 0,
     paddingHorizontal: 20,
-    width: "100%"
+    position: "absolute",
+    right: 0
   },
   avatarStage: {
     alignItems: "center",
@@ -393,18 +398,19 @@ const styles = StyleSheet.create({
     borderRadius: 43,
     borderWidth: 2,
     height: 86,
+    width: 86,
     justifyContent: "center",
     position: "relative",
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 12 },
     shadowOpacity: 0.22,
     shadowRadius: 22,
-    width: 86
+
   },
   avatarImage: {
     borderRadius: 38,
-    height: 76,
-    width: 76
+    height: 80,
+    width: 80
   },
   genderBadge: {
     alignItems: "center",
@@ -413,25 +419,23 @@ const styles = StyleSheet.create({
     borderRadius: 17,
     borderWidth: 1,
     bottom: -2,
-    height: 34,
+    height: 24,  width: 24,
     justifyContent: "center",
     position: "absolute",
-    right: -9,
+    right: -5,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.12,
     shadowRadius: 8,
-    width: 34
+
   },
   identityBlock: {
     flex: 1,
-    minWidth: 0,
-    minHeight: 86,
-    justifyContent: "center"
+    justifyContent: "flex-start",
+    minWidth: 0
   },
   profileTextStack: {
-    justifyContent: "center",
-    minHeight: 76
+    justifyContent: "flex-end"
   },
   name: {
     color: "#FFFFFF",
@@ -445,28 +449,16 @@ const styles = StyleSheet.create({
     color: "rgba(255, 255, 255, 0.82)",
     fontSize: 15,
     fontWeight: "700",
-    letterSpacing: 0,
+    letterSpacing: 2,
     lineHeight: 20,
     marginTop: 5
   },
   contentSheet: {
     backgroundColor: "#FFFFFF",
-    marginTop: -34,
-    overflow: "hidden",
-    width: "100%"
-  },
-  sheetTabs: {
-    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 8,
-    borderTopRightRadius: 8
-  },
-  sheetTabsInner: {
-    alignItems: "center",
-    alignSelf: "center",
-    flexDirection: "row",
-    maxWidth: 560,
-    minHeight: 72,
-    paddingHorizontal: 22,
+    borderTopRightRadius: 8,
+    marginTop: -12,
+    overflow: "hidden",
     width: "100%"
   },
   contentBody: {
@@ -477,7 +469,10 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   activeTab: {
-    marginRight: 32
+    alignSelf: "flex-start",
+    marginLeft: 22,
+    marginTop: 10,
+    marginBottom: 8
   },
   activeTabText: {
     color: "#111827",

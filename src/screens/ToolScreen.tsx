@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
+import { Iconify } from "../components/Iconify";
+
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import {
   setAudioModeAsync,
@@ -26,7 +28,7 @@ type ToolItem = {
   accent: string;
   badgeKey?: TranslationKey;
   descriptionKey: TranslationKey;
-  icon: keyof typeof Ionicons.glyphMap;
+  icon: string; // Ionicons name or Iconify prefix:name, e.g. "mdi:home"
   titleKey: TranslationKey;
 };
 
@@ -46,38 +48,37 @@ const TOOL_SECTIONS: ToolSection[] = [
       {
         accent: "#2563EB",
         descriptionKey: "tool.items.parameter.description",
-        icon: "search-outline",
+        icon: "tabler:list-search",
         titleKey: "tool.items.parameter.title"
       },
       {
-        accent: "#F97316",
+        accent: "#D4A574",
         descriptionKey: "tool.items.material.description",
-        icon: "scale-outline",
+        icon: "fa-solid:balance-scale-right",
         titleKey: "tool.items.material.title"
       },
       {
         accent: "#16A34A",
         descriptionKey: "tool.items.kpi.description",
-        icon: "bar-chart-outline",
+        icon: "stats-chart-outline",
         titleKey: "tool.items.kpi.title"
       },
       {
         accent: "#DC2626",
-        badgeKey: "tool.badges.hot",
         descriptionKey: "tool.items.startup.description",
-        icon: "map-outline",
+        icon: "emojione-monotone:factory",
         titleKey: "tool.items.startup.title"
       },
-      {
-        accent: "#0891B2",
-        descriptionKey: "tool.items.monitor.description",
-        icon: "cloud-done-outline",
-        titleKey: "tool.items.monitor.title"
-      },
-      {
+      // {
+      //   accent: "#0891B2",
+      //   descriptionKey: "tool.items.monitor.description",
+      //   icon: "cloud-done-outline",
+      //   titleKey: "tool.items.monitor.title"
+      // },
+      { //转化分析
         accent: "#7C3AED",
         descriptionKey: "tool.items.conversion.description",
-        icon: "git-network-outline",
+        icon: "mingcute:mind-map-line",
         titleKey: "tool.items.conversion.title"
       }
     ]
@@ -88,15 +89,15 @@ const TOOL_SECTIONS: ToolSection[] = [
     subtitleKey: "tool.sections.training.subtitle",
     tools: [
       {
-        accent: "#F97316",
+        accent: "#FF4400",
         descriptionKey: "tool.items.quiz.description",
-        icon: "book-outline",
+        icon: "game-icons:bookmarklet",
         titleKey: "tool.items.quiz.title"
       },
       {
-        accent: "#2563EB",
+        accent: "#0891B2",
         descriptionKey: "tool.items.simulation.description",
-        icon: "desktop-outline",
+        icon: "mdi:monitor-dashboard",
         titleKey: "tool.items.simulation.title"
       }
     ]
@@ -289,7 +290,7 @@ export function ToolScreen() {
           styles.content,
           {
             paddingTop: insets.top + 18,
-            paddingBottom: Math.max(tabBarHeight + insets.bottom + 24, 112)
+            paddingBottom: Math.max(tabBarHeight + insets.bottom + 24, 100)
           }
         ]}
       >
@@ -413,6 +414,27 @@ export function ToolScreen() {
               </Text>
             </Pressable>
           </View>
+
+          {/* <View style={styles.iconRow}>
+            <View style={styles.iconDemo}>
+              <Iconify icon="mdi:emoticon-happy-outline" size={28} color="f97316" />
+            </View>
+            <View style={styles.iconDemo}>
+              <Iconify icon="mdi:rocket-launch-outline" size={28} color="7c3aed" />
+            </View>
+            <View style={styles.iconDemo}>
+              <Iconify icon="mdi:palette-outline" size={28} color="06b6d4" />
+            </View>
+            <View style={styles.iconDemo}>
+              <Iconify icon="material-symbols:10k" size={28} color="f97316" />
+            </View>
+            <View style={styles.iconDemo}>
+              <Iconify icon="solar:accumulator-outline" size={28} color="f97316" />
+            </View>
+            <View style={styles.iconDemo}>
+              <Iconify icon="mingcute:mind-map-line" size={28} color="7C3AED" />
+            </View>
+          </View> */}
 
           <Pressable
             accessibilityRole="button"
@@ -649,7 +671,10 @@ function ToolCard({ tool }: { tool: ToolItem }) {
     >
       <View style={styles.toolTop}>
         <View style={[styles.toolIcon, { backgroundColor: `${tool.accent}14` }]}>
-          <Ionicons name={tool.icon} size={25} color={tool.accent} />
+          {tool.icon.includes(":")
+            ? <Iconify icon={tool.icon} size={25} color={tool.accent.replace("#", "")} />
+            : <Ionicons name={tool.icon as keyof typeof Ionicons.glyphMap} size={25} color={tool.accent} />
+          }
         </View>
         <Text
           adjustsFontSizeToFit
@@ -932,8 +957,8 @@ const styles = StyleSheet.create({
     right: 0
   },
   floatingTopBar: {
-    backgroundColor: "rgba(255, 255, 255, 0.94)",
-    borderBottomColor: "rgba(226, 232, 240, 0.9)",
+    backgroundColor: "#FFFFFF",
+    borderBottomColor: "#E5E7EB",
     borderBottomWidth: StyleSheet.hairlineWidth,
     elevation: 10,
     left: 0,
@@ -1163,5 +1188,65 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0,
     marginTop: 3
+  },
+  iconRow: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 10
+  },
+  iconDemo: {
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#E2E8F0",
+    borderRadius: 8,
+    borderWidth: 1,
+    height: 52,
+    justifyContent: "center",
+    width: 52
+  },
+  iconPickerSection: {
+    marginBottom: 10
+  },
+  iconPickerGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8
+  },
+  iconPickerCard: {
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#EEF2F7",
+    borderRadius: 8,
+    borderWidth: 1,
+    gap: 4,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    width: "18.7%"
+  },
+  iconPickerRing: {
+    alignItems: "center",
+    borderColor: "#E2E8F0",
+    borderRadius: 999,
+    borderWidth: 1.5,
+    height: 42,
+    justifyContent: "center",
+    width: 42
+  },
+  iconPickerLabel: {
+    color: "#0F172A",
+    fontSize: 9,
+    fontWeight: "800",
+    letterSpacing: 0,
+    maxWidth: 56,
+    textAlign: "center"
+  },
+  iconPickerName: {
+    color: "#94A3B8",
+    fontSize: 7,
+    fontWeight: "600",
+    letterSpacing: 0,
+    maxWidth: 56,
+    textAlign: "center"
   }
 });

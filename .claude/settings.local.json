@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(dir /b /s \"e:\\\\vibecoding\\\\vibecodingProject\\\\chatgpt-demo\")",
+      "Bash(dir /b /s /a-d \"e:\\\\vibecoding\\\\vibecodingProject\\\\chatgpt-demo\\\\src\" 2>nul)",
+      "Bash(npx tsc *)"
+    ],
+    "additionalDirectories": [
+      "e:\\vibecoding\\vibecodingProject\\chatgpt-demo"
+    ]
+  }
+}

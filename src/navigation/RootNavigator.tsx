@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { AppHeader } from "../components/AppHeader";
 import { useLanguage } from "../i18n/language";
+import { EntropyScreen } from "../screens/EntropyScreen";
 import { HomeScreen } from "../screens/HomeScreen";
 import { PetScreen } from "../screens/PetScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
@@ -32,10 +33,11 @@ export function RootNavigator() {
         headerShown:
           route.name !== "Home" &&
           route.name !== "AI" &&
+          route.name !== "Entropy" &&
           route.name !== "Pet" &&
           route.name !== "Profile" &&
           route.name !== "Search",
-        tabBarActiveTintColor: "#1677FF",
+        tabBarActiveTintColor: "#FF4400",
         tabBarInactiveTintColor: "#1F2937",
         tabBarLabelPosition: "below-icon",
         tabBarLabel: ({ color }) => (
@@ -61,6 +63,13 @@ export function RootNavigator() {
           marginTop: 0,
           width: 24
         },
+        tabBarIcon: ({ color, focused }) => (
+          <Ionicons
+            name={getTabIcon(route.name, focused)}
+            size={22}
+            color={color}
+          />
+        ),
         tabBarStyle:
           route.name === "Search"
             ? styles.hiddenTabBar
@@ -83,17 +92,11 @@ export function RootNavigator() {
             <View style={styles.tabBarVeil} />
           </BlurView>
         ),
-        tabBarIcon: ({ color, focused }) => (
-          <Ionicons
-            name={getTabIcon(route.name, focused)}
-            size={22}
-            color={color}
-          />
-        )
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="AI" component={ToolScreen} />
+      <Tab.Screen name="Entropy" component={EntropyScreen} />
       <Tab.Screen name="Pet" component={PetScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen
@@ -119,6 +122,10 @@ function getTabLabel(
     return t("tabs.workbench");
   }
 
+  if (routeName === "Entropy") {
+    return t("tabs.entropy");
+  }
+
   if (routeName === "Pet") {
     return t("tabs.pet");
   }
@@ -140,6 +147,10 @@ function getTabIcon(
 
   if (routeName === "AI") {
     return focused ? "briefcase" : "briefcase-outline";
+  }
+
+  if (routeName === "Entropy") {
+    return focused ? "dice" : "dice-outline";
   }
 
   if (routeName === "Pet") {

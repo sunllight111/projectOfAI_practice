@@ -1,12 +1,9 @@
 import React, { memo, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber/native";
+import { MathUtils } from "three";
 import type { Group, Mesh } from "three";
 
 import type { PetSnapshot } from "../engine/petTypes";
-
-declare const require: <T>(id: string) => T;
-
-const { MathUtils } = require<typeof import("three")>("three");
 
 type PetModelProps = {
   snapshot: PetSnapshot;
@@ -104,11 +101,11 @@ export const PetModel = memo(function PetModel({ snapshot }: PetModelProps) {
       <group ref={flameRef} position={[1.62, 0.13, -0.02]} rotation={[0, 0, -0.45]}>
         <mesh>
           <coneGeometry args={[0.28, 0.72, 16]} />
-          <meshStandardMaterial color={colors.flame} emissive="#EA580C" emissiveIntensity={0.65} />
+          <meshStandardMaterial color={colors.flame} emissive={colors.flame} emissiveIntensity={0.65} />
         </mesh>
         <mesh position={[0, -0.05, 0.04]} scale={[0.58, 0.62, 0.58]}>
           <coneGeometry args={[0.22, 0.58, 14]} />
-          <meshStandardMaterial color={colors.flameCore} emissive="#FDE68A" emissiveIntensity={0.7} />
+          <meshStandardMaterial color={colors.flameCore} emissive={colors.flameCore} emissiveIntensity={0.7} />
         </mesh>
       </group>
 

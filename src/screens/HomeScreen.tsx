@@ -442,7 +442,7 @@ export function HomeScreen() {
   const { width } = useWindowDimensions();
   const { language, t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(1);
-  const feedBottomPadding = Math.max(tabBarHeight + insets.bottom + 18, 112);
+  const feedBottomPadding = Math.max(tabBarHeight + insets.bottom + 18, 100);
 
   useEffect(() => {
     widthRef.current = width;
@@ -544,7 +544,7 @@ export function HomeScreen() {
             style={styles.iconButton}
             accessibilityLabel={t("home.accessibility.menu")}
           >
-            <Ionicons name="menu-outline" size={32} color="#222222" />
+            {/* <Ionicons name="menu-outline" size={32} color="#222222" /> */}
           </Pressable>
 
           <View style={styles.mainTabs}>
@@ -572,7 +572,7 @@ export function HomeScreen() {
                 >
                   {t(section.labelKey)}
                 </Animated.Text>
-                {section.id === "following" ? (
+                {/* {section.id === "following" ? (
                   <View style={styles.badge}>
                     <Text
                       adjustsFontSizeToFit
@@ -583,7 +583,7 @@ export function HomeScreen() {
                       16
                     </Text>
                   </View>
-                ) : null}
+                ) : null} */}
                 <Animated.View
                   style={[
                     styles.activeUnderline,
@@ -603,7 +603,7 @@ export function HomeScreen() {
           </Pressable>
         </View>
 
-        <View style={styles.channelBar}>
+        {/* <View style={styles.channelBar}>
           {CHANNEL_KEYS.map((channelKey, index) => (
             <Text
               adjustsFontSizeToFit
@@ -619,7 +619,7 @@ export function HomeScreen() {
             </Text>
           ))}
           <Ionicons name="chevron-down" size={22} color="#222222" />
-        </View>
+        </View> */}
       </View>
 
       <View style={styles.feedPager} {...panResponder.panHandlers}>

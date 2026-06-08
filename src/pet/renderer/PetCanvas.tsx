@@ -30,6 +30,7 @@ export const PetCanvas = memo(function PetCanvas({
         camera={{ fov: 45, position: [0, 1.2, 7] }}
         shadows={false}
       >
+        <color attach="background" args={["#FFF7ED"]} />
         <PetScene snapshot={snapshot} />
       </Canvas>
     </View>

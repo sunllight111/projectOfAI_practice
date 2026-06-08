@@ -11,11 +11,10 @@ type PetSceneProps = {
 export const PetScene = memo(function PetScene({ snapshot }: PetSceneProps) {
   return (
     <>
-      <color args={["#FFF7ED"]} attach="background" />
       <PetLighting />
       <mesh position={[0, -1.58, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[2.1, 48]} />
-        <meshStandardMaterial color="#FDBA74" opacity={0.28} transparent />
+        <meshStandardMaterial color="#FDBA74" opacity={0.28} transparent={true} />
       </mesh>
       <PetModel snapshot={snapshot} />
     </>
