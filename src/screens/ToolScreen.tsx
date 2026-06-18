@@ -39,6 +39,45 @@ type ToolSection = {
   tools: ToolItem[];
 };
 
+type OverviewMetric = {
+  background: string;
+  color: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  labelKey: TranslationKey;
+  value: string;
+};
+
+const OVERVIEW_METRICS: OverviewMetric[] = [
+  {
+    background: "#ECFDF5",
+    color: "#16A34A",
+    icon: "analytics-outline",
+    labelKey: "tool.overview.mastery",
+    value: "72%"
+  },
+  {
+    background: "#EFF6FF",
+    color: "#2563EB",
+    icon: "create-outline",
+    labelKey: "tool.overview.todayPractice",
+    value: "18"
+  },
+  {
+    background: "#ECFEFF",
+    color: "#0891B2",
+    icon: "desktop-outline",
+    labelKey: "tool.overview.simulations",
+    value: "2"
+  },
+  {
+    background: "#FFF7ED",
+    color: "#EA580C",
+    icon: "alert-circle-outline",
+    labelKey: "tool.overview.review",
+    value: "4"
+  }
+];
+
 const TOOL_SECTIONS: ToolSection[] = [
   {
     id: "process",
@@ -75,7 +114,7 @@ const TOOL_SECTIONS: ToolSection[] = [
       //   icon: "cloud-done-outline",
       //   titleKey: "tool.items.monitor.title"
       // },
-      { //转化分析
+      {
         accent: "#7C3AED",
         descriptionKey: "tool.items.conversion.description",
         icon: "mingcute:mind-map-line",
@@ -249,6 +288,9 @@ export function ToolScreen() {
     <View style={styles.screen}>
       <View style={styles.topWash} />
       <View style={styles.accentRail} />
+      <View style={styles.softMiddleWash} />
+      <View style={styles.softProcessWash} />
+      <View style={styles.softTrainingWash} />
       {showTopTabbar ? (
         <View
           style={[
@@ -265,13 +307,13 @@ export function ToolScreen() {
             </Text>
             <View style={styles.floatingTabs}>
               <Text numberOfLines={1} style={styles.floatingTab}>
-                工艺
+                {"\u5de5\u827a"}
               </Text>
               <Text numberOfLines={1} style={styles.floatingTab}>
-                培训
+                {"\u57f9\u8bad"}
               </Text>
               <Text numberOfLines={1} style={styles.floatingTab}>
-                演练
+                {"\u6f14\u7ec3"}
               </Text>
             </View>
           </View>
@@ -312,6 +354,122 @@ export function ToolScreen() {
             >
               {t("tool.title")}
             </Text>
+          </View>
+        </View>
+
+        <View style={styles.overviewPanel}>
+          <View style={styles.overviewPanelTop}>
+            <View style={styles.overviewMainCopy}>
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.68}
+                numberOfLines={1}
+                style={styles.overviewTitle}
+              >
+                {t("tool.overview.title")}
+              </Text>
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.72}
+                numberOfLines={1}
+                style={styles.overviewSubtitle}
+              >
+                {t("tool.overview.subtitle")}
+              </Text>
+            </View>
+            <View style={styles.overviewStatusPill}>
+              <Ionicons name="sparkles-outline" size={14} color="#2563EB" />
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.72}
+                numberOfLines={1}
+                style={styles.overviewStatusText}
+              >
+                {t("tool.overview.status")}
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.overviewProgressHeader}>
+            <Text
+              adjustsFontSizeToFit
+              minimumFontScale={0.72}
+              numberOfLines={1}
+              style={styles.overviewProgressLabel}
+            >
+              {t("tool.overview.progressLabel")}
+            </Text>
+            <Text style={styles.overviewProgressValue}>72%</Text>
+          </View>
+
+          <View style={styles.overviewProgressTrack}>
+            <View style={styles.overviewProgressFill} />
+          </View>
+
+          <View style={styles.overviewMetricsGrid}>
+            {OVERVIEW_METRICS.map((metric) => (
+              <View key={metric.labelKey} style={styles.overviewMetricItem}>
+                <View style={styles.overviewMetricLeft}>
+                  <View
+                    style={[
+                      styles.overviewMetricIcon,
+                      { backgroundColor: metric.background }
+                    ]}
+                  >
+                    <Ionicons
+                      name={metric.icon}
+                      size={16}
+                      color={metric.color}
+                    />
+                  </View>
+                  <Text
+                    adjustsFontSizeToFit
+                    minimumFontScale={0.68}
+                    numberOfLines={1}
+                    style={styles.overviewMetricLabel}
+                  >
+                    {t(metric.labelKey)}
+                  </Text>
+                </View>
+                <Text
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.68}
+                  numberOfLines={1}
+                  style={styles.overviewMetricValue}
+                >
+                  {metric.value}
+                </Text>
+              </View>
+            ))}
+          </View>
+
+          <View style={styles.overviewFocusRow}>
+            <View style={styles.overviewFocusItem}>
+              <Text style={styles.overviewFocusLabel}>
+                {t("tool.overview.focusLabel")}
+              </Text>
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.72}
+                numberOfLines={1}
+                style={styles.overviewFocusValue}
+              >
+                {t("tool.overview.focusValue")}
+              </Text>
+            </View>
+            <View style={styles.overviewFocusItem}>
+              <Text style={styles.overviewFocusLabel}>
+                {t("tool.overview.nextLabel")}
+              </Text>
+              <Text
+                adjustsFontSizeToFit
+                minimumFontScale={0.72}
+                numberOfLines={1}
+                style={styles.overviewFocusValue}
+              >
+                {t("tool.overview.nextValue")}
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -575,8 +733,12 @@ export function ToolScreen() {
                 <Ionicons name="warning" size={23} color="#FFFFFF" />
               </View>
               <View style={styles.dangerAlarmCopy}>
-                <Text style={styles.dangerAlarmTitle}>危险警报</Text>
-                <Text style={styles.dangerAlarmText}>请注意当前状态</Text>
+                <Text style={styles.dangerAlarmTitle}>
+                  {"\u5371\u9669\u8b66\u62a5"}
+                </Text>
+                <Text style={styles.dangerAlarmText}>
+                  {"\u8bf7\u6ce8\u610f\u5f53\u524d\u72b6\u6001"}
+                </Text>
               </View>
               <View style={styles.dangerAlarmSignal}>
                 <View style={styles.dangerSignalDot} />
@@ -734,6 +896,33 @@ const styles = StyleSheet.create({
     top: 88,
     transform: [{ rotate: "-18deg" }],
     width: 190
+  },
+  softMiddleWash: {
+    backgroundColor: "rgba(255, 255, 255, 0.28)",
+    borderRadius: 999,
+    height: 104,
+    position: "absolute",
+    right: 18,
+    top: 248,
+    width: 156
+  },
+  softProcessWash: {
+    backgroundColor: "rgba(22, 119, 255, 0.026)",
+    borderRadius: 999,
+    height: 132,
+    left: -34,
+    position: "absolute",
+    top: 424,
+    width: 188
+  },
+  softTrainingWash: {
+    backgroundColor: "rgba(8, 145, 178, 0.024)",
+    borderRadius: 999,
+    height: 126,
+    position: "absolute",
+    right: -42,
+    top: 644,
+    width: 196
   },
   dangerOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -1025,6 +1214,176 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     marginTop: 2,
     maxWidth: "100%"
+  },
+  overviewPanel: {
+    backgroundColor: "#FFFFFF",
+    borderColor: "#E6EEF7",
+    borderRadius: 8,
+    borderWidth: 1,
+    elevation: 2,
+    marginTop: 14,
+    overflow: "hidden",
+    padding: 14,
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.06,
+    shadowRadius: 18
+  },
+  overviewPanelTop: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    gap: 10,
+    justifyContent: "space-between"
+  },
+  overviewMainCopy: {
+    flex: 1,
+    minWidth: 0
+  },
+  overviewTitle: {
+    color: "#0F172A",
+    fontSize: 18,
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 23
+  },
+  overviewSubtitle: {
+    color: "#64748B",
+    fontSize: 12,
+    fontWeight: "700",
+    letterSpacing: 0,
+    lineHeight: 17,
+    marginTop: 3
+  },
+  overviewStatusPill: {
+    alignItems: "center",
+    backgroundColor: "#EFF6FF",
+    borderRadius: 999,
+    flexDirection: "row",
+    flexShrink: 0,
+    gap: 4,
+    maxWidth: 128,
+    paddingHorizontal: 8,
+    paddingVertical: 5
+  },
+  overviewStatusText: {
+    color: "#2563EB",
+    flexShrink: 1,
+    fontSize: 11,
+    fontWeight: "900",
+    letterSpacing: 0
+  },
+  overviewProgressHeader: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 14
+  },
+  overviewProgressLabel: {
+    color: "#475569",
+    flex: 1,
+    fontSize: 12,
+    fontWeight: "800",
+    letterSpacing: 0
+  },
+  overviewProgressValue: {
+    color: "#2563EB",
+    fontSize: 13,
+    fontWeight: "900",
+    letterSpacing: 0
+  },
+  overviewProgressTrack: {
+    backgroundColor: "#E2E8F0",
+    borderRadius: 999,
+    height: 8,
+    marginTop: 7,
+    overflow: "hidden"
+  },
+  overviewProgressFill: {
+    backgroundColor: "#2563EB",
+    borderRadius: 999,
+    height: "100%",
+    width: "72%"
+  },
+  overviewMetricsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 9,
+    marginTop: 12
+  },
+  overviewMetricItem: {
+    alignItems: "center",
+    backgroundColor: "#F9FBFD",
+    borderRadius: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    minHeight: 56,
+    minWidth: 0,
+    paddingHorizontal: 11,
+    paddingVertical: 8,
+    width: "48.5%"
+  },
+  overviewMetricLeft: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    gap: 7,
+    minWidth: 0
+  },
+  overviewMetricIcon: {
+    alignItems: "center",
+    borderRadius: 8,
+    flexShrink: 0,
+    height: 30,
+    justifyContent: "center",
+    width: 30
+  },
+  overviewMetricValue: {
+    color: "#0F172A",
+    flexShrink: 0,
+    fontSize: 18,
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 22,
+    marginLeft: 8,
+    minWidth: 34,
+    textAlign: "right"
+  },
+  overviewMetricLabel: {
+    color: "#64748B",
+    flex: 1,
+    fontSize: 10,
+    fontWeight: "800",
+    letterSpacing: 0,
+    lineHeight: 13,
+    minWidth: 0
+  },
+  overviewFocusRow: {
+    flexDirection: "row",
+    gap: 8,
+    marginTop: 10
+  },
+  overviewFocusItem: {
+    backgroundColor: "#F1F5F9",
+    borderRadius: 8,
+    flex: 1,
+    minWidth: 0,
+    paddingHorizontal: 10,
+    paddingVertical: 9
+  },
+  overviewFocusLabel: {
+    color: "#94A3B8",
+    fontSize: 10,
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 13
+  },
+  overviewFocusValue: {
+    color: "#0F172A",
+    fontSize: 12,
+    fontWeight: "900",
+    letterSpacing: 0,
+    lineHeight: 16,
+    marginTop: 2
   },
   section: {
     marginTop: 18

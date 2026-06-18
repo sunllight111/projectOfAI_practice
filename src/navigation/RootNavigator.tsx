@@ -9,6 +9,7 @@ import { AppHeader } from "../components/AppHeader";
 import { useLanguage } from "../i18n/language";
 import { EntropyScreen } from "../screens/EntropyScreen";
 import { HomeScreen } from "../screens/HomeScreen";
+import { MentorScreen } from "../screens/MentorScreen";
 import { PetScreen } from "../screens/PetScreen";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { SearchScreen } from "../screens/SearchScreen";
@@ -33,6 +34,7 @@ export function RootNavigator() {
         headerShown:
           route.name !== "Home" &&
           route.name !== "AI" &&
+          route.name !== "Mentor" &&
           route.name !== "Entropy" &&
           route.name !== "Pet" &&
           route.name !== "Profile" &&
@@ -96,6 +98,7 @@ export function RootNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="AI" component={ToolScreen} />
+      <Tab.Screen name="Mentor" component={MentorScreen} />
       <Tab.Screen name="Entropy" component={EntropyScreen} />
       <Tab.Screen name="Pet" component={PetScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -120,6 +123,10 @@ function getTabLabel(
 
   if (routeName === "AI") {
     return t("tabs.workbench");
+  }
+
+  if (routeName === "Mentor") {
+    return t("tabs.mentor");
   }
 
   if (routeName === "Entropy") {
@@ -147,6 +154,10 @@ function getTabIcon(
 
   if (routeName === "AI") {
     return focused ? "briefcase" : "briefcase-outline";
+  }
+
+  if (routeName === "Mentor") {
+    return focused ? "school" : "school-outline";
   }
 
   if (routeName === "Entropy") {

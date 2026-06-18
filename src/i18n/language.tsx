@@ -53,6 +53,7 @@ export type TranslationKey =
   | "pet.stats.energy"
   | "pet.stats.hunger"
   | "tabs.home"
+  | "tabs.mentor"
   | "tabs.pet"
   | "tabs.profile"
   | "tabs.workbench"
@@ -75,6 +76,35 @@ export type TranslationKey =
   | "tool.items.simulation.title"
   | "tool.items.startup.description"
   | "tool.items.startup.title"
+  | "tool.mentor.archive"
+  | "tool.mentor.archiveDesc"
+  | "tool.mentor.chatCard"
+  | "tool.mentor.chatCardDesc"
+  | "tool.mentor.imageLabel"
+  | "tool.mentor.learning"
+  | "tool.mentor.learningDesc"
+  | "tool.mentor.chatMentor"
+  | "tool.mentor.chatTitle"
+  | "tool.mentor.chatUser"
+  | "tool.mentor.closeChat"
+  | "tool.mentor.openChat"
+  | "tool.mentor.state.explain"
+  | "tool.mentor.state.idle"
+  | "tool.mentor.state.think"
+  | "tool.mentor.subtitle"
+  | "tool.mentor.title"
+  | "tool.overview.focusLabel"
+  | "tool.overview.focusValue"
+  | "tool.overview.mastery"
+  | "tool.overview.nextLabel"
+  | "tool.overview.nextValue"
+  | "tool.overview.progressLabel"
+  | "tool.overview.review"
+  | "tool.overview.simulations"
+  | "tool.overview.status"
+  | "tool.overview.subtitle"
+  | "tool.overview.title"
+  | "tool.overview.todayPractice"
   | "tool.search.placeholder"
   | "tool.sections.process.subtitle"
   | "tool.sections.process.title"
@@ -150,6 +180,7 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "pet.stats.energy": "\u7cbe\u529b",
     "pet.stats.hunger": "\u9971\u8179",
     "tabs.home": "\u9996\u9875",
+    "tabs.mentor": "\u5bfc\u5e08",
     "tabs.pet": "\u5ba0\u7269",
     "tabs.profile": "\u6211",
     "tabs.workbench": "\u5de5\u4f5c\u53f0",
@@ -179,6 +210,37 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.items.startup.description":
       "\u5f00\u505c\u8f66\u6b65\u9aa4\u3001\u98ce\u9669\u70b9\u63d0\u9192",
     "tool.items.startup.title": "\u5f00\u8f66\u5bfc\u822a",
+    "tool.mentor.archive": "\u5de5\u827a\u89c1\u95fb\u6863\u6848",
+    "tool.mentor.archiveDesc": "\u6d4f\u89c8\u5de5\u827a\u77e5\u8bc6\u4e0e\u6848\u4f8b",
+    "tool.mentor.chatCard": "\u804a\u4e00\u804a",
+    "tool.mentor.chatCardDesc": "\u4e0e\u6570\u5b57\u5bfc\u5e08\u5bf9\u8bdd",
+    "tool.mentor.imageLabel": "\u5de5\u4e1a\u6570\u5b57\u5bfc\u5e08\u5f62\u8c61",
+    "tool.mentor.learning": "\u5b66\u4e60\u60c5\u51b5",
+    "tool.mentor.learningDesc": "\u67e5\u770b\u5b66\u4e60\u8fdb\u5ea6\u4e0e\u6210\u7ee9",
+    "tool.mentor.chatMentor":
+      "\u6211\u4f1a\u7ed3\u5408\u5de5\u827a\u77e5\u8bc6\u3001OTS \u6f14\u7ec3\u548c\u6570\u636e\u5206\u6790\u8fdb\u884c\u8bb2\u89e3\u3002",
+    "tool.mentor.chatTitle": "\u6570\u5b57\u5bfc\u5e08",
+    "tool.mentor.chatUser": "\u8bf7\u8bf4\u660e\u5f53\u524d\u5de5\u827a\u6570\u636e",
+    "tool.mentor.closeChat": "\u5173\u95ed\u5bf9\u8bdd",
+    "tool.mentor.openChat": "AI \u95ee\u7b54",
+    "tool.mentor.state.explain": "\u8bb2\u89e3",
+    "tool.mentor.state.idle": "\u5f85\u673a",
+    "tool.mentor.state.think": "\u601d\u8003",
+    "tool.mentor.subtitle": "\u5de5\u4e1a\u6570\u5b57\u5316 AI \u52a9\u624b",
+    "tool.mentor.title": "\u5bfc\u5e08",
+    "tool.overview.focusLabel": "\u8584\u5f31\u9879",
+    "tool.overview.focusValue": "\u7269\u6599\u5e73\u8861",
+    "tool.overview.mastery": "\u5de5\u827a\u638c\u63e1",
+    "tool.overview.nextLabel": "\u5efa\u8bae\u52a8\u4f5c",
+    "tool.overview.nextValue": "\u5b8c\u6210\u4eff\u771f\u6f14\u7ec3",
+    "tool.overview.progressLabel": "\u7efc\u5408\u5b8c\u6210\u5ea6",
+    "tool.overview.review": "\u5f85\u590d\u76d8",
+    "tool.overview.simulations": "\u4eff\u771f\u6f14\u7ec3",
+    "tool.overview.status": "\u4eca\u65e5\u5df2\u66f4\u65b0",
+    "tool.overview.subtitle":
+      "\u5237\u9898\u3001\u4eff\u771f\u4e0e\u5de5\u827a\u638c\u63e1\u60c5\u51b5",
+    "tool.overview.title": "\u7ec3\u4e60\u603b\u89c8",
+    "tool.overview.todayPractice": "\u4eca\u65e5\u7ec3\u4e60",
     "tool.search.placeholder": "\u641c\u7d22\u53c2\u6570\u3001\u6307\u6807\u3001\u57f9\u8bad\u5185\u5bb9",
     "tool.sections.process.subtitle": "\u751f\u4ea7\u8fc7\u7a0b\u5e38\u7528\u5de5\u5177",
     "tool.sections.process.title": "\u5de5\u827a\u529f\u80fd",
@@ -247,6 +309,7 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "pet.stats.energy": "Energy",
     "pet.stats.hunger": "Full",
     "tabs.home": "Home",
+    "tabs.mentor": "Mentor",
     "tabs.pet": "Pet",
     "tabs.profile": "Me",
     "tabs.workbench": "Workbench",
@@ -269,6 +332,36 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.items.simulation.title": "Simulator",
     "tool.items.startup.description": "Startup steps and risk reminders",
     "tool.items.startup.title": "Startup guide",
+    "tool.mentor.archive": "Process Knowledge Archive",
+    "tool.mentor.archiveDesc": "Browse process knowledge and cases",
+    "tool.mentor.chatCard": "Chat",
+    "tool.mentor.chatCardDesc": "Talk with your digital mentor",
+    "tool.mentor.imageLabel": "Industrial digital mentor character",
+    "tool.mentor.learning": "Learning Status",
+    "tool.mentor.learningDesc": "View learning progress and results",
+    "tool.mentor.chatMentor":
+      "I will explain with process knowledge, OTS practice context, and data analysis.",
+    "tool.mentor.chatTitle": "Digital Mentor",
+    "tool.mentor.chatUser": "Please explain the current process data.",
+    "tool.mentor.closeChat": "Close chat",
+    "tool.mentor.openChat": "AI Q&A",
+    "tool.mentor.state.explain": "Explain",
+    "tool.mentor.state.idle": "Idle",
+    "tool.mentor.state.think": "Think",
+    "tool.mentor.subtitle": "Industrial digitalization AI assistant",
+    "tool.mentor.title": "Mentor",
+    "tool.overview.focusLabel": "Focus",
+    "tool.overview.focusValue": "Material balance",
+    "tool.overview.mastery": "Process mastery",
+    "tool.overview.nextLabel": "Next action",
+    "tool.overview.nextValue": "Run simulator drill",
+    "tool.overview.progressLabel": "Overall completion",
+    "tool.overview.review": "To review",
+    "tool.overview.simulations": "Simulations",
+    "tool.overview.status": "Updated today",
+    "tool.overview.subtitle": "Quiz, simulation, and process mastery",
+    "tool.overview.title": "Practice overview",
+    "tool.overview.todayPractice": "Today's practice",
     "tool.search.placeholder": "Search parameters, metrics, training",
     "tool.sections.process.subtitle": "Common tools for production workflow",
     "tool.sections.process.title": "Process tools",
@@ -277,8 +370,8 @@ const TRANSLATIONS: Record<Language, Record<TranslationKey, string>> = {
     "tool.stats.pending": "Pending",
     "tool.stats.todayQueries": "Queries today",
     "tool.stats.trainingProgress": "Training",
-    "entropy.slot.result.lose": "Try again～",
-    "entropy.slot.result.win": "🎉 Jackpot!",
+    "entropy.slot.result.lose": "Try again~",
+    "entropy.slot.result.win": "\ud83c\udf89 Jackpot!",
     "entropy.slot.spin": "Spin Slots",
     "entropy.slot.title": "Slot Machine",
     "entropy.title": "Entropy",
